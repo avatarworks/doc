@@ -68,3 +68,4 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 source_suffix = ['.rst', '.md']
 master_doc = 'index'
+copyright = u'Copyright (c) 2019 Avatarworks. All rights reserved.'
