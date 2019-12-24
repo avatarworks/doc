@@ -8,7 +8,6 @@ Welcome to avatarworks-doc's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    hello
 
