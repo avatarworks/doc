@@ -18,8 +18,8 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'avatarworks-doc'
-copyright = '2019, avatarworks'
-author = 'avatarworks'
+copyright = u'Copyright (c) 2019 Avatarworks. All rights reserved.'
+author = 'Avatarworks'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'
@@ -31,7 +31,8 @@ release = '0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'recommonmark'
+    'recommonmark',
+    'sphinx.ext.mathjax'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -68,4 +69,3 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 source_suffix = ['.rst', '.md']
 master_doc = 'index'
-copyright = u'Copyright (c) 2019 Avatarworks. All rights reserved.'

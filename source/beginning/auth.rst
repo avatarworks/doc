@@ -1,0 +1,51 @@
+============================
+鉴权认证机制
+============================
+
+## 1. 接口说明
+
+该接口接入方式是黑镜开放平台多数REST API接口通用的集成方式。
+按照接口详细开发文档进行集成开发即可。
+
+1. 授权认证，调用接口需要将 Authorization  信息放在 HTTP 请求头中；
+2. 接口统一为 UTF-8 编码；
+3. 接口支持 http 和 https；
+4. 请求方式为 POST 。
+
+
+
+## 2. 接口调用流程
+
+1. 通过接口密钥基于hmac计算签名，将签名以及其他参数放在Http Request Header中，详见下方 [授权认证](api_desc.html) 。
+2. 将音频或图片数据放在Http Request Body中，详见各接口的详细说明 。
+3. 向服务器端发送Http请求后，接收服务器端的返回结果，返回结果详见各接口的详细说明。
+
+## 3. 授权认证
+
+API 使用 hmac 签名，通过提取请求中的重要字段并使用用户或应用的密钥 AppKey/AppSecret 来构造签名，通过 HTTP 头部 Authorization: AW AppKey:Sign 发送到服务端，由服务端验证请求调用者的身份。
+
+变量说明:
+
+| 变量名     | 格式   | 说明                                                   |
+| ---------- | ------ | ------------------------------------------------------ |
+| timestamp  | string | 当前UTC时间戳，从1970年1月1日0点0分0秒开始到现在的秒数 |
+| app_key    | string | 黑镜AI开放平台-> 应用管理 中的 App Key                 |
+| app_name   | string | 黑镜AI开放平台-> 应用管理 中的 应用名                  |
+| app_secret | string | 黑镜AI开放平台-> 应用管理 中的 App Secret              |
+| sign       | string | 经过计算后得到的签名                                   |
+
+1. 计算签名:
+
+```
+sign = base64_encode(timestamp + ":" +
+hash_hmac("sha256", timestamp + ":" + app_key + ":" + app_name, app_secret))
+```
+
+2. 添加HTTP头
+
+```
+Authorization: "AW " + app_key + ":"  + sign
+```
+
+    注: "AW  " 字符AW跟随一个空格符
+
