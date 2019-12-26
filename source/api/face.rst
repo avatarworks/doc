@@ -58,8 +58,8 @@
         "err_code": 0,
         "ret": {
 
-            "target_data" : "base64数据",
-            "mapping"     : "base64数据",
+            "target_data" : "{base64数据}",
+            "mapping"     : "{base64数据}",
             "face_credibility_level": 0,
             "face_width": 642
         }
