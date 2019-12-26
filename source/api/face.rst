@@ -17,7 +17,7 @@
 **请求URL:**
 ::
 
-    http(s)://api.avatarworks.com/service/v1/face/recon
+    http(s)://api.avatarworks.com/service/v2/face/recon
 
 **请求Header:**
 
@@ -50,3 +50,25 @@
 
 
 
+**返回示例:**
+
+::
+
+    {
+        "err_code": 0,
+        "ret": {
+
+            "target_data" : "base64数据",
+            "mapping"     : "base64数据",
+            "face_credibility_level": 0,
+            "face_width": 642
+        }
+    }
+
+**PHP 代码示例:**
+
+
+**Java 代码示例:**
+
+
+**golang 代码示例:**
