@@ -16,7 +16,7 @@ gift服务
 **请求URL:**
 ::
 
-    http://HOST/gif_service
+   http(s)://api.avatarworks.com/service/v1/gif/hair
 
 **请求Header:**
 
@@ -32,8 +32,6 @@ gift服务
 +------------------------+------------+---------+------------------------------------------+
 | 变量名                 | 格式       | 必选    | 说明                                     |
 +------------------------+------------+---------+------------------------------------------+
-| method                 |   string   | true    | 固定为: hair_list                        |
-+------------------------+------------+---------+------------------------------------------+
 | gender                 |   string   | false   | 性别，0=>男，1=>女，2=>其他              |
 +------------------------+------------+---------+------------------------------------------+
 
@@ -43,11 +41,9 @@ gift服务
 ::
 
     curl -X GET \
-        http://HOST/gif_service \
+        http://api.avatarworks.com/service/v1/gif/hair \
         -H 'Content-Type: application/x-www-form-urlencoded' \
-        -H 'Host: URL' \
-        -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-        -F method=hair_list
+        -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
 
 
 
@@ -60,7 +56,7 @@ gift服务
         "err_code": 0,
         "ret": [
             {
-                "icon": "http://URL/dress/7a/89/7a89e704f3fe20dc211601aefd41e9ae8deb6823icon.png",
+                "icon": "http://img.res.meing.io/dress/7a/89/7a89e704f3fe20dc211601aefd41e9ae8deb6823icon.png",
                 "name": "nan_tf_142",
                 "is_default": false,
                 "id": "5238"
@@ -92,7 +88,7 @@ gift服务
 **请求URL:**
 ::
 
-    http://HOST/gif_service
+    http(s)://api.avatarworks.com/service/v1/gif/clothes
 
 **请求Header:**
 
@@ -108,8 +104,6 @@ gift服务
 +------------------------+------------+---------+------------------------------------------+
 | 变量名                 | 格式       | 必选    | 说明                                     |
 +------------------------+------------+---------+------------------------------------------+
-| method                 |   string   | true    | 固定为: clothes_list                     |
-+------------------------+------------+---------+------------------------------------------+
 | gender                 |   string   | false   | 性别，0=>男，1=>女，2=>其他              |
 +------------------------+------------+---------+------------------------------------------+
 
@@ -119,9 +113,8 @@ gift服务
 ::
 
     curl -X GET \
-        http://HOST/gif_service \
+        http://api.avatarworks.com/service/v1/gif/clothes \
         -H 'Content-Type: application/x-www-form-urlencoded' \
-        -H 'Host: URL' \
         -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
         -F method=clothes_list
 
@@ -136,7 +129,7 @@ gift服务
         "err_code": 0,
         "ret": [
             {
-                "icon": "http://URL/articles/19/b3/19b3fb31c692350ce39463bf47fc04a3a27acd7aicon@3x.png",
+                "icon": "http://img.res.meing.io/articles/19/b3/19b3fb31c692350ce39463bf47fc04a3a27acd7aicon@3x.png",
                 "name": "new_women_39",
                 "is_default": false,
                 "id": "401"
@@ -170,7 +163,7 @@ gift服务
 **请求URL:**
 ::
 
-    http://HOST/gif_service
+    http(s)://api.avatarworks.com/service/v1/gif/animation
 
 **请求Header:**
 
@@ -186,8 +179,6 @@ gift服务
 +------------------------+------------+---------+------------------------------------------+
 | 变量名                 | 格式       | 必选    | 说明                                     |
 +------------------------+------------+---------+------------------------------------------+
-| method                 |   string   | true    | 固定为: animation_list                   |
-+------------------------+------------+---------+------------------------------------------+
 | gender                 |   string   | false   | 性别，0=>男，1=>女，2=>其他              |
 +------------------------+------------+---------+------------------------------------------+
 
@@ -197,11 +188,9 @@ gift服务
 ::
 
     curl -X GET \
-        http://HOST/gif_service \
+        http://api.avatarworks.com/service/v1/gif/animation \
         -H 'Content-Type: application/x-www-form-urlencoded' \
-        -H 'Host: URL' \
-        -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-        -F method=animation_list
+        -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
 
 
 
@@ -254,7 +243,7 @@ gift服务
 **请求URL:**
 ::
 
-    http://HOST/gif_service
+    http(s)://api.avatarworks.com/service/v1/gif/gen_gif
 
 **请求Header:**
 
@@ -471,7 +460,7 @@ gift服务
     curl -X POST \
         http://HOST/gif_service \
         -H 'Content-Type: application/x-www-form-urlencoded' \
-        -d 'texture_url=e3299c1c4787adf6719000e07a72ed58.jpg&target_url=e3299c1c4787adf6719000e07a72ed58.target&hair=5238&clothes=468&animation=537&color=E8C7B8&method=gen_gif'
+        -d 'texture_url=e3299c1c4787adf6719000e07a72ed58.jpg&target_url=e3299c1c4787adf6719000e07a72ed58.target&hair=5238&clothes=468&animation=537&color=E8C7B8'
 
 
 
@@ -483,7 +472,7 @@ gift服务
     {
         "err_code": 0,
         "ret": {
-            "gif_url": "http://URL/4aba76ba901410a74da49d6a86649a06.gif"
+            "gif_url": "http://gif.img.avatarworks.com/20191227/f50843df00d66e783be8a4bae2fa2423.gif"
         }
     }
 
