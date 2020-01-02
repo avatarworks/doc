@@ -9,4 +9,5 @@ API
     :numbered: 2
 
     /api/face
-    /api/gift
+    /api/gif
+    /api/talking_photo
