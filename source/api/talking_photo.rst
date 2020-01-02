@@ -16,7 +16,7 @@
 **请求URL:**
 ::
 
-   http(s)://api.avatarworks.com/ai_service/resources
+   http(s)://api.avatarworks.com/service/v1/talkingphoto/resources
 
 **请求Header:**
 
@@ -43,7 +43,7 @@
 ::
 
     curl -X GET \
-        http://api.avatarworks.com/ai_service/resources \
+        http://api.avatarworks.com/service/v1/talkingphoto/resources \
         -H 'Authorization: AW 1bf2dac253dea653b9af3a41f7816dd5aeef5c0c:MTU1Mzg0MDYxNDrI0UoB6Nghb9AvxaNVlImCTLRyNPQAsHJji3u8xWa/vw==' \
         -H 'Content-Type: application/x-www-form-urlencoded'
 
@@ -90,7 +90,7 @@
 **请求URL:**
 ::
 
-   http(s)://api.avatarworks.com/ai_service/face_recon
+   http(s)://api.avatarworks.com/service/v1/talkingphoto/face_recon
 
 **请求Header:**
 
@@ -115,7 +115,7 @@
 ::
 
     curl -X POST \
-        http://api.avatarworks.com/ai_service/face_recon \
+        http://api.avatarworks.com/service/v1/talkingphoto/face_recon \
         -H 'Authorization: AW 1bf2dac253dea653b9af3a41f7816dd5aeef5c0c:MTU1Mzg0MDYxNDrI0UoB6Nghb9AvxaNVlImCTLRyNPQAsHJji3u8xWa/vw==' \
         -H 'Content-Type: application/x-www-form-urlencoded' \
         -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
@@ -172,7 +172,7 @@
 **请求URL:**
 ::
 
-   http(s)://api.avatarworks.com/ai_service/gen_video
+   http(s)://api.avatarworks.com/service/v1/talkingphoto/gen_video
 
 **请求Header:**
 
@@ -209,7 +209,7 @@
 ::
 
     curl -X POST \
-        http://api.avatarworks.com/ai_service/gen_video \
+        http://api.avatarworks.com/service/v1/talkingphoto/gen_video \
         -H 'Authorization: AW 1bf2dac253dea653b9af3a41f7816dd5aeef5c0c:MTU2NjQ3MzAyNjoMUtsgdpDabFysh3ABY3BKkmS+DCxuAx9mgMglB4/cCA==' \
         -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
         -F audio=@/home/jun54555/Downloads/TP_m042.mp3 \
@@ -245,8 +245,8 @@
     {
         "err_code": 0,
         "ret": {
-            "video_url": "http://121.40.137.113/faa0c6a743fffce2a7028df22026115e.mp4",
-            "cover_url": "http://121.40.137.113/faa0c6a743fffce2a7028df22026115e.jpg"
+            "video_url": "http://tp.img.avatarworks.com/faa0c6a743fffce2a7028df22026115e.mp4",
+            "cover_url": "http://tp.img.avatarworks.com/faa0c6a743fffce2a7028df22026115e.jpg"
         }
     }
 
@@ -261,125 +261,3 @@
 
 
 **golang 代码示例:**
-
-
-生成字幕翻转视频
----------------------
-**接口描述:**
-::
-
-    上传音频文件和字幕信息生成字幕翻转视频。
-
-**HTTP方法:**
-::
-
-    POST   multipart/form-data
-
-**请求URL:**
-::
-
-   http(s)://api.avatarworks.com/ai_service/flip_typing
-
-**请求Header:**
-
-+---------------------+---------------------------------+
-| 参数名称	          | 值                              |
-+---------------------+---------------------------------+
-| Authorization       |签名认证串,详见: :ref:`授权认证` |
-+---------------------+---------------------------------+
-
-
-**请求参数:**
-
-+------------------------+------------+---------+------------------------------------------+
-| 变量名                 | 格式       | 必选    | 说明                                     |
-+------------------------+------------+---------+------------------------------------------+
-| text_json              |   string   | true    | 字幕信息，如: [{"text":                  |
-|                        |            |         | "和当爸爸后的区别", "duration":2}        |
-|                        |            |         | ，{"text":"hello, world", "duration"     |
-|                        |            |         | :0.5}]，其中duration表示字幕延时时长     |
-|                        |            |         | ，类型为float                            |
-+------------------------+------------+---------+------------------------------------------+
-| color                  |   string   | true    | 字体颜色,如: #0000ff                     |
-+------------------------+------------+---------+------------------------------------------+
-| audio                  |   binary   | false   | 上传的mp3音频文件                        |
-+------------------------+------------+---------+------------------------------------------+
-| background             |   string   | false   | 背景图, 默认黑色, 目前提供：             |
-|                        |            |         | guofeng  => 国风，                       |
-|                        |            |         | huaijiu  => 怀旧，                       |
-|                        |            |         | wenyi  => 文艺，                         |
-|                        |            |         | wenqing  => 温情，                       |
-|                        |            |         | katong => 卡通，                         |
-+------------------------+------------+---------+------------------------------------------+
-| font                   |   string   | true    | 字体,目前提供：                          |
-|                        |            |         | fzkt => 方正卡通，                       |
-|                        |            |         | fzltch => 方正兰亭粗黑简体，             |
-|                        |            |         | fzmw => 方正喵呜简体，                   |
-|                        |            |         | fzqt => 方正启体简体，                   |
-|                        |            |         | hkhb => 华康海报体                       |
-+------------------------+------------+---------+------------------------------------------+
-| secondary_color        |   string   | true    | 第二文字字体颜色,如: #0000ff             |
-+------------------------+------------+---------+------------------------------------------+
-
-**调用样例:**
-
-::
-
-    curl -X POST \
-        http://api.avatarworks.com/ai_service/flip_typing \
-        -H 'Authorization: AW 1bf2dac253dededdaf3a41f7816dedenaeef5c0c:MTU2OTgyNDc2Nzpg2B6MlbR/DFlOhtS6XAo7HsCMPkWla0mzVvt8E4PasA==' \
-        -H 'Content-Type: application/x-www-form-urlencoded' \
-        -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-        -F 'text_json=[
-          {"text":"和当爸爸后的区别", "duration":2},
-          {"text":"hello, world", "duration":0.5},
-          {"text":"一觉睡到大天亮", "duration":1.75},
-          {"text":"现在", "duration":0.5},
-          {"text":"隔点就起床", "duration":1.25},
-          {"text":"以前是", "duration":0.75},
-          {"text":"nice shot", "duration":0.5},
-          {"text":"体育频道肥皂剧", "duration":1.75},
-          {"text":"现在是", "duration":0.75}
-      ]' \
-        -F 'background=katong' \
-        -F 'color=#0000ff' \
-        -F 'font=fzkt' \
-        -F 'secondary_color=#000000'
-
-**返回示例:**
-
-::
-
-    {
-        "err_code": 0,
-        "ret": "http://121.40.137.113/e9abdda9e4b5b4d9c06c5ccfc6952a9a.mp4"
-    }
-
-
-**PHP 代码示例:**
-
-
-**Java 代码示例:**
-
-
-**golang 代码示例:**
-
-
-接口返回值说明
----------------------
-
-+--------------+----------------------+
-| -10002       | 参数有误             |
-+--------------+----------------------+
-| -10003       | 生成anim出错         |
-+--------------+----------------------+
-| -10004       | 权限认证有误         |
-+--------------+----------------------+
-| -10005       | 没有上传音频         |
-+--------------+----------------------+
-| -10006       | 没有上传图片         |
-+--------------+----------------------+
-| -10007       | 人脸重建系统出错     |
-+--------------+----------------------+
-| -10008       | 字体不存在           |
-+--------------+----------------------+
