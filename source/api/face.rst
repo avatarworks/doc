@@ -17,7 +17,7 @@
 **请求URL:**
 ::
 
-    http(s)://api.avatarworks.com/service/v2/face/recon
+    http(s)://api.avatarworks.com/service/v3/face/recon
 
 **请求Header:**
 
