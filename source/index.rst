@@ -8,7 +8,7 @@
 ^^^^^
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    新手指南 <beginning/index>
    Api文档 <api/index>
