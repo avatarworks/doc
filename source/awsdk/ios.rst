@@ -40,10 +40,10 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 
 导入 SDK
 ~~~~~~~~
-- 在工程配置中，将 AWSDK.framework 导入工程中，勾选Embed方式为``Embed & Sign``，如下：
+- 在工程配置中，将 AWSDK.framework 导入工程中，勾选Embed方式为 ``Embed & Sign`` ，如下：
 .. image:: /_static/img/awsdk_xcode_config.png
 
-- 找到 Product -> Schemes -> Edit Scheme... -> Run -> Options， 将``Metal API Validation``选项勾选为``Disabled``
+- 找到 Product -> Schemes -> Edit Scheme... -> Run -> Options， 将 ``Metal API Validation`` 选项勾选为 ``Disabled``
 .. image:: /_static/img/awsdk_xcode_scheme.png
 
 功能使用
