@@ -12,5 +12,5 @@
 
    新手指南 <beginning/index>
    Api文档 <api/index>
-   AWSDK <awsdk/index>
+   AWSDK开发文档 <awsdk/index>
 
