@@ -64,7 +64,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 .. code-block:: objc
    :linenos:
 
-    #import <AWSDK/AWSDK.h>
+   #import <AWSDK/AWSDK.h>
    
    
 添加声明
