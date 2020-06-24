@@ -34,9 +34,9 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 --------------------
 开发环境配置
 ~~~~~~~~
-- Xcode 开发工具。App Store `Xcode`_
+- Xcode 开发工具。App Store `下载地址`_
 
-.. _Xcode: https://apps.apple.com/us/app/xcode/id497799835?ls=1&mt=12
+.. _下载地址: https://apps.apple.com/us/app/xcode/id497799835?ls=1&mt=12
 
 功能使用
 --------------------
