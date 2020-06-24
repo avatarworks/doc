@@ -38,6 +38,8 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 
 .. _下载地址: https://apps.apple.com/us/app/xcode/id497799835?ls=1&mt=12
 
+- 使用真机调试
+
 导入 SDK
 ~~~~~~~~
 - 在工程配置中，将 AWSDK.framework 导入工程中，勾选Embed方式为 ``Embed & Sign`` ，如图所示
@@ -54,6 +56,16 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 - 创建 View Controller，选择 subclass 为 ``UIViewController`` ，如图所示
 
 .. image:: /_static/img/xcode_create_viewcontroller.png
+
+添加引用
+^^^^^^^^
+在 ``CharacterViewController.m`` 中添加引用
+.. code:: objc
+
+   #import <AWSDK/AWSDK.h>
+   
+添加声明
+^^^^^^^^
 
 功能使用
 --------------------
