@@ -61,7 +61,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 ^^^^^^^^
 在 ``CharacterViewController.m`` 中添加引用
 
-.. code-block:: c
+.. code-block:: objc
    :linenos:
 
     #import <AWSDK/AWSDK.h>
