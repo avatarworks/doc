@@ -69,6 +69,19 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
    
 添加声明
 ^^^^^^^^
+在 ``CharacterViewController.h`` 头文件中声明支持 ``AWSDKDelegate``，如下
+
+.. code-block:: objc
+   :linenos:
+   
+   #import <UIKit/UIKit.h>
+   #import <AWSDK/AWSDK.h>
+   @interface CharacterViewController : UIViewController <AWSDKDelegate>
+   @end
+
+使用license
+^^^^^^^^
+
 
 功能使用
 --------------------
