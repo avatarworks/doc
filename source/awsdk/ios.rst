@@ -48,6 +48,29 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 - 找到 Product -> Schemes -> Edit Scheme... -> Run -> Options， 将 ``Metal API Validation`` 选项勾选为 ``Disabled``
 .. image:: /_static/img/awsdk_xcode_scheme.png
 
+使用license
+^^^^^^^^
+SDK需要取得有效的license文件才可以使用，为此，我们可以在合适的地方（SDK其他Api使用之前）调用 ``setLicense`` 接口，导入license。例如，我们可以在 ``AppDelegate`` 中这样使用license文件：
+
+.. code-block:: objc
+   :linenos:
+   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+       // Override point for customization after application launch.
+       [self setupLicense];
+       return YES;
+   }
+   
+   - (void)setupLicense
+   {
+      NSError *error;
+      NSString *license = [NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error];
+      if (error)
+         NSLog(@"Error reading file: %@", error.localizedDescription);
+      NSTimeInterval expired = [[AWSDK sharedSDK] setLicense:license];
+      NSDate *date = [NSDate dateWithTimeIntervalSince1970:expired];
+      NSLog(@"License过期于：%@", date);
+   }
+
 初始化虚拟人逻辑
 ~~~~~~~~~~~
 
@@ -78,9 +101,6 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
    #import <AWSDK/AWSDK.h>
    @interface CharacterViewController : UIViewController <AWSDKDelegate>
    @end
-
-使用license
-^^^^^^^^
 
 
 功能使用
