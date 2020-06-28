@@ -84,7 +84,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    
    @end
 
-这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保 ``license.hj`` 被正确拷贝到指定的目录中，如下
+这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保license文件 ``license.hj`` 被正确拷贝到指定的目录中，如下
 
 .. image:: /_static/img/awsdk_license_bundle.png
 
