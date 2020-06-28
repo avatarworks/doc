@@ -246,6 +246,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 
 .. code-block:: objc
    :linenos:
+   
    - (void)loadCharacter
    {
        AWCharacter* character = [AWCharacter new];
@@ -260,6 +261,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
            AWCharacterConfigKeyGender: gender,
        }];
    }
+   
 
 这个方法可以在 ``setupDirs`` 之后调用，例如
 
