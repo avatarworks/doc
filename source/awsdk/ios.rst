@@ -50,7 +50,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 
 使用license
 ^^^^^^^^
-SDK需要取得有效的license文件才可以使用，为此，我们可以在合适的地方（SDK其他Api使用之前）调用 ``setLicense`` 接口，导入license。例如，我们可以在 ``AppDelegate`` 中这样使用license文件：
+SDK需要取得有效的license文件才可以使用，为此，我们可以在合适的地方（SDK其他Api使用之前）调用 ``setLicense`` 接口，导入license。例如，我们可以在 ``AppDelegate.m`` 中这样使用license文件：
 
 .. code-block:: objc
    :linenos:
