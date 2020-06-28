@@ -105,7 +105,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 
 添加引用
 ^^^^^^^^
-在 ``CharacterViewController.m`` 中添加引用
+在 ``CharacterViewController.h`` 头文件中添加引用
 
 .. code-block:: objc
    :linenos:
@@ -125,6 +125,25 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    @interface CharacterViewController : UIViewController <AWSDKDelegate>
    @end
 
+在 ``CharacterViewController.m`` 源文件中，找到 ``- (void)viewDidLoad`` 方法，我们需要在这个方法中启动引擎。
+.. code-block:: objc
+   :linenos:
+   
+   - (void)viewDidLoad {
+       [super viewDidLoad];
+       // Do any additional setup after loading the view.
+       [AWSDK sharedSDK].delegate = self;
+       if (![AWSDK sharedSDK].engineReady) {
+           [[AWSDK sharedSDK] startEngine];
+       } else {
+           UIView* renderView = [AWSDK sharedSDK].renderView;
+           [self.view insertSubview:renderView atIndex:0];
+       }
+   }
+   
+在这个方法中，我们首先指定好 ``AWSDK`` 的 ``delegate``，然后判断引擎是否准备好。如果没准备好，就启动引擎，否则就将SDK提供的 ``renderView`` 插入到 ``CharacterViewController`` 的 ``view`` 中。``renderView`` 是一个将引擎内容渲染出来的视图，当引擎未启动的时候，``renderView`` 是个 ``nullptr``，只有当引擎准备好的时候，``renderView`` 才有值。那么，我们该如何知道 ``renderView`` 什么时候从 ``nullptr`` 变成有值呢？也就说，引擎什么时候准备好呢？这就需要监听
+
+【需要注意的是，**引擎是一个单例，一旦启动就无法关闭**。】
 
 功能使用
 --------------------
