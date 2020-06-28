@@ -55,7 +55,12 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 .. code-block:: objc
    :linenos:
    
+   #import "AppDelegate.h"
    #import <AWSDK/AWSDK.h>
+
+   @implementation AppDelegate
+   
+   ...
    
    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
        // Override point for customization after application launch.
@@ -74,6 +79,10 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
       NSDate *date = [NSDate dateWithTimeIntervalSince1970:expired];
       NSLog(@"License过期于：%@", date);
    }
+   
+   ...
+   
+   @end
 
 这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保 ``license.hj`` 被正确拷贝到指定的目录中，如下
 
