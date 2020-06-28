@@ -240,11 +240,9 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 加载角色
 ^^^^^^^^^
 
-配置完资源和缓存目录，接下来就是载入一个角色。为了加载一个角色，我们需要角色的人脸贴图文件和人脸target文件。这两个文件一般可通过重建服务获得，详见 :ref:`人脸服务`
+配置完资源和缓存目录，接下来就是载入一个角色。为了加载一个角色，我们需要角色的人脸贴图文件和人脸target文件。这两个文件一般可通过重建服务获得，详见：:ref:`人脸服务`
 
-
-
-
+假设 ``media`` 目录下已经存在着人脸贴图文件 ``face/face1.jpg`` 和人脸target文件 ``face/face1.target``，则可以通过如下方法载入一个女性（``female``）角色
 
 .. code-block:: objc
    :linenos:
@@ -263,6 +261,20 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
        }];
    }
 
+这个方法可以在 ``setupDirs`` 之后调用，例如
+
+.. code-block:: objc
+   :linenos:
+   
+   - (void)engineEndLoading
+   {
+       UIView* renderView = [AWSDK sharedSDK].renderView;
+       [self.view insertSubview:renderView atIndex:0];
+       [self setupDirs];
+       [self loadCharacter];
+   }
+   
+   
 功能使用
 --------------------
 
