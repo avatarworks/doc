@@ -28,7 +28,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 前置条件
 ~~~~~~~~
 
-- 已申请到了SDK的license
+- 取得有效的SDK license文件
 
 快速开始
 --------------------
@@ -66,6 +66,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    - (void)setupLicense
    {
       NSError *error;
+      NSString *filepath = [[NSBundle mainBundle] pathForResource:@"license" ofType:@"hj"];
       NSString *license = [NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error];
       if (error)
          NSLog(@"Error reading file: %@", error.localizedDescription);
