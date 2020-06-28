@@ -75,6 +75,12 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
       NSLog(@"License过期于：%@", date);
    }
 
+这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保 ``license.hj`` 被正确拷贝到指定的目录中，如下
+
+.. image:: /_static/img/awsdk_license_bundle.png
+
+当然， ``license.hj`` 放在任何目录都可以，只要程序能读取出内容，并将内容传给 ``AWSDK`` 的 ``setLicense`` 接口即可。
+
 初始化虚拟人逻辑
 ~~~~~~~~~~~
 
