@@ -276,6 +276,10 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
        [self loadCharacter];
    }
    
+注意事项 Q&A
+^^^^^^^^
+
+- 为何 ``AWCharacter`` 对象在被释放后，角色依然显示在 ``renderView`` 中？
    
 功能使用
 --------------------
