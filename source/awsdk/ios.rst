@@ -126,6 +126,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    @end
 
 在 ``CharacterViewController.m`` 源文件中，找到 ``- (void)viewDidLoad`` 方法，我们需要在这个方法中启动引擎。
+
 .. code-block:: objc
    :linenos:
    
