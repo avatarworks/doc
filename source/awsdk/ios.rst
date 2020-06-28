@@ -173,11 +173,31 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    }
 
 在这个例子里，我们分别调用了两个 ``AWResourceManager`` 提供的接口来配置资源和缓存路径。其中，
+
 - ``setCacheDirectory`` 用于设置缓存路径。缓存路径要求必须具备可让程序读写的权限，一般像 ``NSDocumentDirectory`` 就是一个理想的路径。
 - ``addResourceDirectory`` 用于添加资源路径。程序可以添加多个资源路径。为了方便，我们把 ``mainBundle`` 下的 ``media`` 目录添加进了资源路径列表中。为此，请确保 ``media`` 目录能被正确拷贝到 ``mainBundle`` 中，如下
 
 .. image:: /_static/img/awsdk_media_bundle.png
 
+对于需要将内置资源从 AWSDK.framework 中分离出来的情况下，可通过如下方式实现
+.. code-block:: objc
+   :linenos:
+   
+   [[AWResourceManager sharedManager] setBaseDirectory:baseDir];
+   
+其中，``baseDir`` 是分离出来的资源目录。
+
+定义好资源和缓存目录，我们就可以在 ``engineEndLoading`` 调用 ``setupDirs`` 了。如下
+
+.. code-block:: objc
+   :linenos:
+   
+   - (void)engineEndLoading
+   {
+       UIView* renderView = [AWSDK sharedSDK].renderView;
+       [self.view insertSubview:renderView atIndex:0];
+       [self setupDirs];
+   }
 
 功能使用
 --------------------
