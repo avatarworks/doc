@@ -58,6 +58,10 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    #import "AppDelegate.h"
    #import <AWSDK/AWSDK.h>
 
+   @interface AppDelegate ()
+   
+   @end
+
    @implementation AppDelegate
    
    ...
