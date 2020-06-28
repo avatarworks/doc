@@ -94,6 +94,42 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 
 当然， ``license.hj`` 放在任何目录都可以，只要程序能读取出内容，并将内容传给 ``AWSDK`` 的 ``setLicense`` 接口即可。
 
+添加生命周期方法
+^^^^^^^^^^^^
+将如下生命周期方法添加到 ``AppDelegate.m`` 中
+
+.. code-block:: objc
+   :linenos:
+   
+   - (void)applicationWillTerminate:(UIApplication *)application
+   {
+       [[AWSDK sharedSDK] applicationWillTerminate];
+   }
+
+   - (void)applicationDidBecomeActive:(UIApplication *)application
+   {
+       [[AWSDK sharedSDK] applicationDidBecomeActive];
+   }
+
+   - (void)applicationWillResignActive:(UIApplication *)application
+   {
+       [[AWSDK sharedSDK] applicationWillResignActive];
+   }
+   - (void)applicationWillEnterForeground:(UIApplication *)application
+   {
+       [[AWSDK sharedSDK] applicationWillEnterForeground];
+   }
+
+   - (void)applicationDidEnterBackground:(UIApplication *)application
+   {
+       [[AWSDK sharedSDK] applicationDidEnterBackground];
+   }
+
+   - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+   {
+       [[AWSDK sharedSDK] applicationDidReceiveMemoryWarning];
+   }
+
 初始化虚拟人逻辑
 ~~~~~~~~~~~
 
