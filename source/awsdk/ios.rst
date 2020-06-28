@@ -236,6 +236,33 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
        [self setupDirs];
    }
 
+
+加载角色
+^^^^^^^^^
+
+配置完资源和缓存目录，接下来就是载入一个角色。为了加载一个角色，我们需要角色的人脸贴图文件和人脸target文件。这两个文件一般可通过重建服务获得，详见 :ref:`人脸服务`
+
+
+
+
+
+.. code-block:: objc
+   :linenos:
+   - (void)loadCharacter
+   {
+       AWCharacter* character = [AWCharacter new];
+
+       AWValue* faceTarget = [AWValue valueOfString:@"face/face1.target"];
+       AWValue* faceTexture = [AWValue valueOfString:@"face/face1.jpg"];
+       AWValue* gender = [AWValue valueOfString:@"female"];
+
+       [character setConfigs:@{
+           AWCharacterConfigKeyFaceTarget: faceTarget,
+           AWCharacterConfigKeyFaceTexture: faceTexture,
+           AWCharacterConfigKeyGender: gender,
+       }];
+   }
+
 功能使用
 --------------------
 
