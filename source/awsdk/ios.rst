@@ -54,6 +54,9 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 
 .. code-block:: objc
    :linenos:
+   
+   #import <AWSDK/AWSDK.h>
+   
    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
        // Override point for customization after application launch.
        [self setupLicense];
