@@ -279,8 +279,19 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 注意事项 Q&A
 ^^^^^^^^
 
-- 为何 ``AWCharacter`` 对象在被释放后，角色依然显示在 ``renderView`` 中？
-   
+- Q：为何 ``AWCharacter`` 创建的对象在被释放后，角色依然显示在 ``renderView`` 中？
+
+A：``AWCharacter`` 是一个角色的配置类，不是角色本身。如果想要移除角色，需要调用 ``AWCharacter`` 的 ``remove`` 方法。
+
+- Q：我按照上面的配置，但 ``engineEndLoading`` 并没有回调
+
+A：有可能哪里出错了，可以实现 ``AWSDKDelegate`` 的 ``engineError:`` 方法，查看错误提示。
+
+
+
+
+
+
 功能使用
 --------------------
 
