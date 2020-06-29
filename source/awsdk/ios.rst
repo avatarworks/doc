@@ -303,13 +303,25 @@ SDK 设计理念
 .. code-block:: objc
    :linenos:
    
-    [character setConfigs:@{
-        AWCharacterConfigKeyFaceTarget: faceTarget,
-        AWCharacterConfigKeyFaceTexture: faceTexture,
-        AWCharacterConfigKeyGender: gender,
-    }];
+   [character setConfigs:@{
+      AWCharacterConfigKeyFaceTarget: faceTarget,
+      AWCharacterConfigKeyFaceTexture: faceTexture,
+      AWCharacterConfigKeyGender: gender,
+   }];
 
 表示需要对角色的脸部target、脸部贴图和性别做出改变。对于没在这一次 ``setConfigs`` 中指定的键值对，SDK 会认为那些键值对没有做出更改，从而不响应相应的变化。
+
+若想让某一键值对恢复到默认值，可以将这个键值对的值置为 ``[AWValue null]``，例如
+
+.. code-block:: objc
+   :linenos:
+   
+   [character setConfigs:@{
+      AWCharacterConfigKeyPosition: [AWValue null]
+   }];
+
+表示将角色的位置恢复到默认值。
+    
 
 线程
 ^^^^^^^^^
@@ -325,7 +337,10 @@ SDK 完全跑在一个独立的线程上。跑在独立线程上的优势是一�
 给角色更换体型
 ~~~~~~~~~~~~~~~~
 
-调整镜头
+调整角色的位置
+~~~~~~~~~~~~~~~~
+
+调整镜头的位置
 ~~~~~~~~~~~~~~~~
 
 载入更多角色
