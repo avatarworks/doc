@@ -10,9 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('.'))
 import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
@@ -25,12 +25,18 @@ author = 'Avatarworks'
 release = '0.1'
 
 
+import recommonmark
+from recommonmark.transform import AutoStructify
+source_suffix = ['.rst', '.md']
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
     'recommonmark',
     'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel',
@@ -67,12 +73,6 @@ html_static_path = ['_static']
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
-
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.txt': 'restructuredtext',
-    '.md': 'markdown',
-}
 
 #source_suffix = ['.rst', '.md']
 master_doc = 'index'
