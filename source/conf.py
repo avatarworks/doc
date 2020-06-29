@@ -19,7 +19,7 @@ import datetime
 # -- Project information -----------------------------------------------------
 
 project = 'AvatarWorks开发者文档'
-copyright = 'Copyright (c) 2019-' + str(datetime.datetime.now().year) + ' Avatarworks. All rights reserved.'
+copyright = '2019-' + str(datetime.datetime.now().year) + ' Avatarworks. All rights reserved.'
 author = 'AvatarWorks'
 
 # The full version, including alpha/beta/rc tags
