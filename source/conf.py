@@ -68,6 +68,12 @@ html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown',
+}
 
-source_suffix = ['.rst', '.md']
+
+#source_suffix = ['.rst', '.md']
 master_doc = 'index'
