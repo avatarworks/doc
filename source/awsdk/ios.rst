@@ -298,6 +298,19 @@ SDK 设计理念
 基于状态变化的更新机制
 ^^^^^^^^^^^
 
+整个 SDK 的设计理念是维护一个全局的状态（State）。这个全局的状态又由若干个子状态组成，如一个角色就构成了一个子状态，一个镜头也构成了一个子状态。每个子状态分别包含了若干个键值对（key-value pair），SDK 会响应键（key）对应的值（value）是否发生变化来更新画面。例如，对于一个角色，当性别 ``AWCharacterConfigKeyGender`` 的值从 ``female`` 变成了 ``male``，画面中的角色就会从女性变成了男性。这些键值对的更新，一般可通过对应类的 ``setConfigs`` 方法来实现。例如，
+
+.. code-block:: objc
+   :linenos:
+   
+    [character setConfigs:@{
+        AWCharacterConfigKeyFaceTarget: faceTarget,
+        AWCharacterConfigKeyFaceTexture: faceTexture,
+        AWCharacterConfigKeyGender: gender,
+    }];
+
+表示需要对角色的脸部target、脸部贴图和性别做出改变。对于没在这一次 ``setConfigs`` 中指定的键值对，SDK 会认为那些键值对没有做出更改，从而不响应相应的变化。
+
 线程
 ^^^^^^^^^
 
@@ -313,6 +326,12 @@ SDK 完全跑在一个独立的线程上。跑在独立线程上的优势是一�
 ~~~~~~~~~~~~~~~~
 
 调整镜头
+~~~~~~~~~~~~~~~~
+
+载入更多角色
+~~~~~~~~~~~~~~~~
+
+开启多镜头
 ~~~~~~~~~~~~~~~~
 
 
