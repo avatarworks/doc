@@ -326,9 +326,50 @@ SDK 设计理念
 线程
 ^^^^^^^^^
 
-SDK 完全跑在一个独立的线程上。跑在独立线程上的优势是一般情况下不影响主线程（或UI线程）的性能，但正如所有异步操作可能带来的同步问题一样，
+SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，在一般情况下不影响主线程（或UI线程）的性能。但正如所有异步操作可能带来的同步问题一样，开发者在主线程更新SDK的时候，也不可避免的要注意线程同步问题。为了方便开发者使用，SDK 会将每一步更新操作，都会丢入一个 FIFO 队列中，以尽可能地方便开发者可以不需要在上一个更新操作的回调函数中去处理下一次更新操作。同时，SDK 还提供了解决队列拥堵的机制，即当前一个更新操作因为耗时而堵塞队列时，后面同类型的更新操作会自动合并成一个大的更新操作，从而在前一个操作结束以后，直接将队列后面遗留的操作直接同步到最终想要的状态。例如，
 
+.. code-block:: objc
+   :linenos:
+   
+   // 操作1
+   [character setConfigs:@{
+      AWCharacterConfigKeyFaceTarget: faceTarget,
+      AWCharacterConfigKeyFaceTexture: faceTexture,
+      AWCharacterConfigKeyGender: gender,
+   }];
+   
+   // 操作2
+   [character setConfigs:@{
+      AWCharacterConfigKeyPosition: position1
+   }];
+   
+   // 操作3
+   [character setConfigs:@{
+      AWCharacterConfigKeyPosition: position2
+   }];
+   
+   // 操作4
+   [character setConfigs:@{
+      AWCharacterConfigKeyPosition: position3
+   }];
+   
+   // 操作5
+   [character setConfigs:@{
+      AWCharacterConfigKeyRotation: rotation
+   }];
+   
+在这个例子中，操作1是一个耗时的操作，造成操作2到操作5滞留在队列中。但是，当操作1执行结束后，操作2到操作5会自动合并成如下一个~~等价~~的大操作，
 
+.. code-block:: objc
+   :linenos:
+   
+   // 等价的操作
+   [character setConfigs:@{
+      AWCharacterConfigKeyPosition: position3,
+      AWCharacterConfigKeyRotation: rotation
+   }];
+
+从上面的例子可以看出：从开发者的调用顺序中，我们可以期待最终的角色位置为 ``position3``，角色的旋转为 ``rotation``，而这正是最终自动合并的大操作的结果。
 
 
 给角色更换衣服
