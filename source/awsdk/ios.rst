@@ -331,29 +331,29 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
 .. code-block:: objc
    :linenos:
    
-   // 操作1
+   // 操作1 -> 更新脸部Target、脸部贴图和性别
    [character setConfigs:@{
       AWCharacterConfigKeyFaceTarget: faceTarget,
       AWCharacterConfigKeyFaceTexture: faceTexture,
       AWCharacterConfigKeyGender: gender,
    }];
    
-   // 操作2
+   // 操作2 -> 更新到位置1
    [character setConfigs:@{
       AWCharacterConfigKeyPosition: position1
    }];
    
-   // 操作3
+   // 操作3 -> 更新到位置2
    [character setConfigs:@{
       AWCharacterConfigKeyPosition: position2
    }];
    
-   // 操作4
+   // 操作4 -> 更新到位置3
    [character setConfigs:@{
       AWCharacterConfigKeyPosition: position3
    }];
    
-   // 操作5
+   // 操作5 -> 更新旋转角
    [character setConfigs:@{
       AWCharacterConfigKeyRotation: rotation
    }];
@@ -363,7 +363,7 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
 .. code-block:: objc
    :linenos:
    
-   // 等价的操作
+   // 等价的操作: 更新到位置3 + 更新旋转角
    [character setConfigs:@{
       AWCharacterConfigKeyPosition: position3,
       AWCharacterConfigKeyRotation: rotation
