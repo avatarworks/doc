@@ -12,6 +12,6 @@ AWSDK文档
     /awsdk/android
     /awsdk/target_male
     /awsdk/target_female
-    /awsdk/test
+    /awsdk/test.md
 
     
