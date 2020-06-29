@@ -14,12 +14,13 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 import sphinx_rtd_theme
+import datetime
 
 # -- Project information -----------------------------------------------------
 
-project = 'avatarworks-doc'
-copyright = u'Copyright (c) 2019 Avatarworks. All rights reserved.'
-author = 'Avatarworks'
+project = 'AvatarWorks开发者文档'
+copyright = 'Copyright (c) 2019-' + str(datetime.datetime.now().year) + ' Avatarworks. All rights reserved.'
+author = 'AvatarWorks'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'
