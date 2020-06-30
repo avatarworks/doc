@@ -556,7 +556,7 @@ SDK 提供了丰富的变形参数，具体可查询：
 .. code-block:: objc
    :linenos:
    
-   AWValue* position = [AWValue valueOfVector3:AWVector3Make(20, 0, 0)
+   AWValue* position = [AWValue valueOfVector3:AWVector3Make(20, 0, 0);
    [character setConfigs:@{
       AWCharacterConfigKeyPosition: position
    }];
@@ -568,14 +568,28 @@ SDK 提供了丰富的变形参数，具体可查询：
 .. code-block:: objc
    :linenos:
    
-   AWValue* rotation = [AWValue valueOfVector3:AWVector3Make(0, 30, 0)
+   AWValue* rotation = [AWValue valueOfVector3:AWVector3Make(0, 30, 0);
    [character setConfigs:@{
       AWCharacterConfigKeyRotation: rotation
    }];
 
 
-调整镜头的位置
+调整镜头的位置和朝向
 ~~~~~~~~~~~~~~~~
+
+和角色类似，镜头（``AWCamera``）也可以调整位置，用法和角色类似，例如
+
+.. code-block:: objc
+   :linenos:
+   
+   AWValue* position = [AWValue valueOfVector3:AWVector3Make(20, 0, 0);
+   AWValue* rotation = [AWValue valueOfVector3:AWVector3Make(0, 30, 0);
+   [camera setConfigs:@{
+      AWCameraConfigKeyPosition: position,
+      AWCameraConfigKeyRotation: rotation
+   }];
+
+为了更方便地处理旋转，镜头还支持始终盯着世界坐标系下的一个位置点，可通过 ``AWCameraConfigKeyLookAt`` 这个键来实现。 
 
 载入更多角色
 ~~~~~~~~~~~~~~~~
