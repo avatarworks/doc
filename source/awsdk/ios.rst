@@ -459,8 +459,76 @@ SDK 提供了丰富的变形参数，具体可查询：
 让角色播放动画
 ~~~~~~~~~~~~~~~~
 
+角色的动画分肢体动画和口型动画，现分别介绍两种动画的播放。
+
 肢体动画
 ^^^^^^^^^^^
+
+若开发者取得了授权的肢体动画资源，就可以在 SDK 里使用这些动画，并作用在角色身上。现假设开发者的资源目录有如下结构：
+
+::
+
+   .
+   ├── face
+   |   ├── face1.jpg
+   |   └── face1.target
+   ├── dress
+   |   ├── hair.zip
+   |   ├── shirt.zip
+   |   ├── pant.zip
+   |   └── shoe.zip
+   └── animation
+       ├── anim1.zip
+       └── anim2.zip
+
+前面已经讨论过 ``face`` 和 ``dress`` 两个目录，这里不再赘述，而 ``animation`` 文件夹包含了两个肢体动画资源文件。
+
+和肢体动画相关的键有：
+
+- ``AWCharacterConfigKeyAnimation`` 动画本身
+- ``AWCharacterConfigKeyAnimationLoop`` 动画是否循环，如果不循环，动画播放结束后会停留在最后一帧
+- ``AWCharacterConfigKeyAnimationFade`` 在两个动画之间切换的过渡时间
+
+我们的目标是先让角色播放 ``animation/anim1.zip``，动画结束后播放 ``animation/anim2.zip``，然后回到初始状态。
+
+.. code-block:: objc
+   :linenos:
+   
+   - (AWCharacter *)getCharacter
+   {
+      static AWCharacter* character = NULL;
+      if (character == NULL) {
+         character = [AWCharacter new];
+         character.delegate = self;
+      }
+      return character;
+   }
+   
+   - (void)playAnimation:(NSString *)anim
+   {
+      AWCharacter* character = [self getCharacter];
+      AWValue* animation;
+      if (anim == null) {
+         animation = [AWValue null];
+      } else {
+         animation = [AWValue valueOfString:anim];
+      }
+      [character setConfigs:@{
+         AWCharacterConfigKeyAnimation: animation,
+         AWCharacterConfigKeyAnimationLoop: [AWValue valueOfBool:YES],
+         AWCharacterConfigKeyAnimationFade: [AWValue valueOfLong:300]
+      }];
+   }
+   
+   - (void)characterAnimationEnd:(NSString *_Nonnull)characterId animation:(AWValue *_Nonnull)animation
+   {
+      if ([[animation stringValue] isEqualToString:@"animation/anim1"]) {
+         [self playAnimation:@"animation/anim2"];
+      } else {
+         [self playAnimation:null];
+      }
+   }
+
 
 口型动画
 ^^^^^^^^^^^
