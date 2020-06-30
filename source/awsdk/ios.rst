@@ -563,6 +563,15 @@ SDK 提供了丰富的变形参数，具体可查询：
    
 就表示将角色的世界坐标系位置设定为 ``(20, 0, 0)``。
 
+除了可以设定角色的位置，还可以设定角色的朝向。朝向既可以用欧拉角表示，也可以用四元数表示。假设我们需要角色绕着 ``y`` 轴旋转 30 度，就可以用如下方式实现：
+
+.. code-block:: objc
+   :linenos:
+   
+   AWValue* rotation = [AWValue valueOfVector3:AWVector3Make(0, 30, 0)
+   [character setConfigs:@{
+      AWCharacterConfigKeyRotation: rotation
+   }];
 
 
 调整镜头的位置
