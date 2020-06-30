@@ -211,7 +211,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 在这个例子里，我们分别调用了两个 ``AWResourceManager`` 提供的接口来配置资源和缓存路径。其中，
 
 - ``setCacheDirectory`` 用于设置缓存路径。缓存路径要求必须具备可让程序读写的权限，一般像 ``NSDocumentDirectory`` 就是一个理想的路径。
-- ``addResourceDirectory`` 用于添加资源路径。程序可以添加多个资源路径。为了方便，我们把 ``mainBundle`` 下的 ``media`` 目录添加进了资源路径列表中。为此，请确保 ``media`` 目录能被正确拷贝到 ``mainBundle`` 中，如下
+- ``addResourceDirectory`` 用于添加资源路径。**程序可以添加任意多个资源路径**。为了方便，我们把 ``mainBundle`` 下的 ``media`` 目录添加进了资源路径列表中。为此，请确保 ``media`` 目录能被正确拷贝到 ``mainBundle`` 中，如下
 
 .. image:: /_static/img/awsdk_media_bundle.png
 
@@ -386,9 +386,13 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
 - 即将释放 ``characterWillRelease:``
 - 成功释放 ``characterDidRelease:``
 
+等等
 
-给角色更换衣服
+给角色更换服装、发型等
 ~~~~~~~~~~~~~~~~
+
+若开发者取得了授权的服装、发型等资源，就可以在 SDK 里使用这些衣服，并穿在角色身上。例如，
+
 
 给角色更换体型
 ~~~~~~~~~~~~~~~~
