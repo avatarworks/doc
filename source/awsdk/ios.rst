@@ -433,6 +433,27 @@ SDK 提供了丰富的变形参数，具体可查询：
 - :ref:`男性角色变形 Target 查询表` 
 - :ref:`女性角色变形 Target 查询表`
 
+假设我们需要给女性角色应用如下变形：
+
+- 可爱脸型，id：20005，权重：0.625
+- 模特体型，id：23002，权重：1
+- 胸部大小，id：23503，权重：0.32
+
+那么，就需要通过如下代码来实现角色的变形：
+
+.. code-block:: objc
+   :linenos:
+   
+   NSArray* targetArr = @[
+      @{@"id": @"20005", @"weight": 0.625},
+      @{@"id": @"23002", @"weight": 1},
+      @{@"id": @"23503", @"weight": 0.32}
+   ];
+   NSData* targetData = [NSJSONSerialization dataWithJSONObject:targetArr options:NSJSONWritingPrettyPrinted error:NULL];
+   AWValue* targets = [AWValue valueOfJson:targetData];
+   [character setConfigs:@{
+      AWCharacterConfigKeyTargetArray: targets
+   }];
 
 
 让角色播放动画
