@@ -373,6 +373,19 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
 
 不过，对于非同类型的操作，例如更新角色和截屏这两个操作，由于它们是互相独立的，我们并不能保障谁先进行，所以最好的办法只能是通过一个操作的完成回调去调用另一个操作。
 
+监听角色的状态变化
+~~~~~~~~~~~~~~~~
+``AWCharacter`` 支持 ``AWCharacterDelegate`` 协议，后者可以监听角色的各种状态变化，如：
+
+- 即将加载 ``characterWillLoad:``
+- 成功加载 ``characterDidLoad:``
+- 加载失败 ``characterLoadFailed:withError:``
+- 即将更新 ``characterWillUpdate:``
+- 成功更新 ``characterDidUpdate:``
+- 更新失败 ``characterUpdateFailed:withError:``
+- 即将释放 ``characterWillRelease:``
+- 成功释放 ``characterDidRelease:``
+
 
 给角色更换衣服
 ~~~~~~~~~~~~~~~~
