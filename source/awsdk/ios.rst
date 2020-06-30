@@ -515,7 +515,7 @@ SDK 提供了丰富的变形参数，具体可查询：
       }
       [character setConfigs:@{
          AWCharacterConfigKeyAnimation: animation,
-         AWCharacterConfigKeyAnimationLoop: [AWValue valueOfBool:YES],
+         AWCharacterConfigKeyAnimationLoop: [AWValue valueOfBool:NO],
          AWCharacterConfigKeyAnimationFade: [AWValue valueOfLong:300]
       }];
    }
