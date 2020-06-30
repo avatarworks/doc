@@ -534,7 +534,12 @@ SDK 提供了丰富的变形参数，具体可查询：
       [self playAnimation:@"animation/anim1"];
    }
 
-代码从 ``- (void)start`` 开始执行，先播放 ``animation/anim1``，在动画结束的回调中，判断当前结束的动画为 ``animation/anim1``，于是播放 ``animation/anim2``；在 ``animation/anim2`` 动画结束的回调中，判断结束的动画为 ``animation/anim2``，于是回到初始状态（把值置为``[AWValue null]`` 会回到初始状态）。在 ``- (void)playAnimation:(NSString *)anim`` 方法中，我们设置了不循环，并且动画之间的切换时间为 300 毫秒。
+代码从 ``- (void)start`` 开始执行，先播放 ``animation/anim1``，在动画结束的回调中，判断当前结束的动画为 ``animation/anim1``，于是播放 ``animation/anim2``；在 ``animation/anim2`` 动画结束的回调中，判断结束的动画为 ``animation/anim2``，于是回到初始状态（把值置为``[AWValue null]`` 会回到初始状态）。
+
+值得注意的两点：
+
+- 在 ``- (void)playAnimation:(NSString *)anim`` 方法中，我们设置了不循环，并且动画之间的切换时间为 300 毫秒。
+- 指定动画资源的时候，我们需要把 ``.zip`` 后缀去掉。
 
 
 口型动画
