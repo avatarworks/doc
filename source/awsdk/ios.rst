@@ -22,7 +22,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 设备以及系统
 ~~~~~~~~
 
-- iPhone4s 及以上设备
+- iPhone4s 或 iPad mini3 及以上设备
 - iOS 9 及以上操作系统
 
 前置条件
@@ -38,7 +38,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 
 .. _下载地址: https://apps.apple.com/us/app/xcode/id497799835?ls=1&mt=12
 
-- 使用真机调试
+- iPhone 或 iPad 等调试设备，不支持模拟器调试
 
 导入 SDK
 ~~~~~~~~
@@ -388,7 +388,7 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
 
 等等
 
-给角色更换服装、发型等
+给角色更换服饰
 ~~~~~~~~~~~~~~~~
 
 若开发者取得了授权的服装、发型等资源，就可以在 SDK 里使用这些衣服，并穿在角色身上。假设开发者的资源目录有如下结构：
@@ -405,6 +405,24 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
        ├── pant.zip
        └── shoe.zip
    
+``face`` 文件夹我们已经在前文介绍了，这里不再赘述。``dress`` 文件夹存放的资源是用于给角色穿戴的服装、发型、鞋子等（统称 **服饰**）。我们可以使用如下方式给角色穿上这些服饰：
+
+.. code-block:: objc
+   :linenos:
+   
+   NSArray* dressArr = @[
+      @"dress/hair",
+      @"dress/shirt",
+      @"dress/pant",
+      @"dress/shoe",
+   ];
+   NSData* dressData = [NSJSONSerialization dataWithJSONObject:dressArr options:NSJSONWritingPrettyPrinted error:NULL];
+   AWValue* dress = [AWValue valueOfJson:dressData];
+   [character setConfigs:@{
+      AWCharacterConfigKeyDressArray: dress
+   }];
+   
+需要注意的是，``dressArr`` 指定的服饰资源列表中，我们需要把 ``.zip`` 后缀去掉。
 
 
 给角色更换体型
