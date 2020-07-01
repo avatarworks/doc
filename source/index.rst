@@ -11,6 +11,6 @@
    :maxdepth: 3
 
    新手指南 <beginning/index>
-   服务端Api文档 <api/index>
-   AWSDK 开发文档 <awsdk/index>
+   服务端 API 文档 <api/index>
+   AWSDK 开发者文档 <awsdk/index>
 
