@@ -17,7 +17,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案。
 设备以及系统
 ~~~~~~~~
 
-- iPhone4s 或 iPad mini3 及以上设备
+- iPhone 4s 或 iPad mini 3 及以上设备
 - iOS 9 及以上操作系统
 
 前置条件
