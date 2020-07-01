@@ -22,7 +22,7 @@ AWSDK 是一个适用于 Android 的虚拟人解决方案。
 混淆
 ~~~~~~~~
 
-为了保证正常使用 SDK ，请在 proguard-rules.pro 文件中添加以下代码：
+为了保证正常使用 SDK ，请在 ``proguard-rules.pro`` 文件中添加以下代码：
 
 .. code-block:: guess
   :linenos:
