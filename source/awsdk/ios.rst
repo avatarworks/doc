@@ -883,7 +883,7 @@ AWResourceManager 作为 SDK 的资源管理器，可以设置缓存路径、添
 
 - 引擎加载成功后的第一件事情就应该通过 ``setCacheDirectory:`` 设置缓存路径。**缓存路径只有一个，里面的内容在SDK执行期间严禁做清除操作，否则可能会出现渲染错误。** 
 
-- 为了让 SDK 使用资源，还必须通过 ``addResourceDirectory:`` 或 ``addResourceDirectory:withPriority`` 添加资源路径。虽然下面这句话看起来像是一句废话，但还是请开发者一定注意：**在 SDK 使用某个资源之前，该资源必须存在与某个资源路径下。**
+- 为了让 SDK 使用资源，还必须通过 ``addResourceDirectory:`` 或 ``addResourceDirectory:withPriority`` 添加资源路径。尽管下面这句话看起来像是一句废话，但还是务必请开发者注意：**SDK 在使用某个资源之前，该资源必须存在于某个资源路径下。**
 
 - 一般情况下，开发者可不需要理会 ``setBaseDirectory:`` 这个方法。但对于有需求将基础资源包和可执行文件分离的情况下，开发者应该调用 ``setBaseDirectory:`` 来指定基础资源包的路径。 
 
