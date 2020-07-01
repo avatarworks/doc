@@ -563,7 +563,7 @@ SDK 提供了丰富的变形参数，具体可查询：
       [self playAnimation:@"animation/anim1"];
    }
 
-代码从 ``- (void)start`` 开始执行，先播放 ``animation/anim1``，在动画结束的回调中，判断当前结束的动画为 ``animation/anim1``，于是播放 ``animation/anim2``；在 ``animation/anim2`` 动画结束的回调中，判断结束的动画为 ``animation/anim2``，于是回到初始状态（把值置为``[AWValue null]`` 会回到初始状态）。
+代码从 ``- (void)start`` 开始执行，先播放 ``animation/anim1``，在动画结束的回调中，判断当前结束的动画为 ``animation/anim1``，于是播放 ``animation/anim2``；在 ``animation/anim2`` 动画结束的回调中，判断结束的动画为 ``animation/anim2``，于是回到初始状态（把值置为 ``[AWValue null]`` 会回到初始状态）。
 
 值得注意的两点：
 
