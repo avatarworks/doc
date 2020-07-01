@@ -742,7 +742,7 @@ AWRecorder 提供了截屏和生成 GIF 的功能。
 AWQuery
 ~~~~~~~~~~~~~~~~~
 
-AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都需要指定本次查询的 ``queryId``，用于标识查询结果是响应哪一次查询。查询的结果可以通过实现 ``AWQueryDelegate`` 的协议方法获得。
+AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都需要指定本次查询的 ``queryId``，用于标识查询结果对应的发起者。查询的结果可以通过实现 ``AWQueryDelegate`` 的协议方法获得。
 
 .. code-block:: objc
    :linenos:
