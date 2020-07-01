@@ -577,7 +577,7 @@ SDK 提供了丰富的变形参数，具体可查询：
 调整镜头的位置和朝向
 ~~~~~~~~~~~~~~~~
 
-和角色类似，镜头（``AWCamera``）也可以调整位置，用法和角色类似，例如
+和角色类似，镜头（``AWCamera``）也可以调整位置和朝向，用法和角色类似，例如
 
 .. code-block:: objc
    :linenos:
@@ -593,6 +593,36 @@ SDK 提供了丰富的变形参数，具体可查询：
 
 载入更多角色
 ~~~~~~~~~~~~~~~~
+
+前面我们通过 ``[AWCharacter new]`` 创建出来的角色配置对象，始终指向同一个默认角色。如果需要创建多个角色，就需要通过如下方法实现
+
+.. code-block:: objc
+   :linenos:
+   
+   // 创建默认角色
+   AWCharacter* defaultCharacter = [AWCharacter new];
+   [defaultCharacter setConfigs:@{
+      AWCharacterConfigKeyFaceTarget: faceTarget1,
+      AWCharacterConfigKeyFaceTexture: faceTexture1,
+      AWCharacterConfigKeyGender: gender1
+   }];
+   
+   // 创建第二个角色，角色id可以任意指定，但不能是 AWDefaultCharacterName
+   AWCharacter* secondCharacter = [[AWCharacter alloc] initWithCharacterId:@"lily"];
+   [secondCharacter setConfigs:@{
+      AWCharacterConfigKeyFaceTarget: faceTarget2,
+      AWCharacterConfigKeyFaceTexture: faceTexture2,
+      AWCharacterConfigKeyGender: gender2
+   }];
+   
+   // 创建第三个角色，角色id可以任意指定，但不能是 AWDefaultCharacterName
+   AWCharacter* thirdCharacter = [[AWCharacter alloc] initWithCharacterId:@"lucy"];
+   [thirdCharacter setConfigs:@{
+      AWCharacterConfigKeyFaceTarget: faceTarget3,
+      AWCharacterConfigKeyFaceTexture: faceTexture3,
+      AWCharacterConfigKeyGender: gender3
+   }];
+
 
 开启多镜头
 ~~~~~~~~~~~~~~~~
