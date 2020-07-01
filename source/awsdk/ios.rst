@@ -9,7 +9,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 ======================
 
 - 具备基本的 iOS 开发能力
-- 准备接入虚拟人SDK
+- 准备接入虚拟人 SDK
 
 开发准备
 ======================
@@ -23,7 +23,7 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 前置条件
 ~~~~~~~~
 
-- 取得有效的SDK license文件
+- 取得有效的 SDK license 文件
 
 快速开始
 ======================
@@ -38,15 +38,15 @@ AWSDK 是一个适用于 iOS 的虚拟人解决方案SDK。
 
 导入 SDK
 ~~~~~~~~
-- 在工程配置中，将 AWSDK.framework 导入工程中，勾选Embed方式为 ``Embed & Sign`` ，如图所示
+- 在工程配置中，将 AWSDK.framework 导入工程中，勾选 Embed 方式为 ``Embed & Sign`` ，如图所示
 .. image:: /_static/img/awsdk_xcode_config.png
 
 - 找到 Product -> Schemes -> Edit Scheme... -> Run -> Options， 将 ``Metal API Validation`` 选项勾选为 ``Disabled``
 .. image:: /_static/img/awsdk_xcode_scheme.png
 
-使用license
+使用 license
 ~~~~~~~~
-SDK需要取得有效的license文件才可以使用，为此，我们可以在合适的地方（SDK其他Api使用之前）调用 ``setLicense`` 接口，导入license。例如，我们可以在 ``AppDelegate.m`` 中这样使用license文件：
+SDK 需要取得有效的 license 文件才可以使用，为此，我们可以在合适的地方（在 SDK 使用其他 API 之前）调用 ``setLicense`` 接口，导入 license 内容。例如，我们可以在 ``AppDelegate.m`` 中这样使用 license 文件：
 
 .. code-block:: objc
    :linenos:
@@ -84,7 +84,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
    
    @end
 
-这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保license文件 ``license.hj`` 被正确拷贝到指定的目录中，如下
+这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保 license 文件 ``license.hj`` 被正确拷贝到指定的目录中，如下
 
 .. image:: /_static/img/awsdk_license_bundle.png
 
@@ -175,7 +175,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
        }
    }
    
-在这个方法中，我们首先指定好 ``AWSDK`` 的 ``delegate``，然后判断引擎是否准备好。如果没准备好，就启动引擎，否则就将SDK提供的 ``renderView`` 插入到 ``CharacterViewController`` 的 ``view`` 中。``renderView`` 是一个将引擎内容渲染出来的视图，当引擎未启动的时候，``renderView`` 是个 ``nullptr``，只有当引擎准备好的时候，``renderView`` 才有值。那么，我们该如何知道 ``renderView`` 什么时候从 ``nullptr`` 变成有值呢，从而将 ``renderView`` 添加进来呢？这就需要从引擎结束加载的回调，即 ``AWSDKDelegate`` 的 ``engineEndLoading`` 方法，去处理，如下：
+在这个方法中，我们首先指定好 ``AWSDK`` 的 ``delegate``，然后判断引擎是否准备好。如果没准备好，就启动引擎，否则就将 SDK 提供的 ``renderView`` 插入到 ``CharacterViewController`` 的 ``view`` 中。``renderView`` 是一个将引擎内容渲染出来的视图，当引擎未启动的时候，``renderView`` 是个空指针，只有当引擎准备好的时候，``renderView`` 才有值。那么，我们该如何知道 ``renderView`` 什么时候不是空指针，从而可以将其添加到某个 ``View`` 呢？引擎准备好的时候，会调用 ``AWSDKDelegate`` 的 ``engineEndLoading`` 方法，这个地方就是将 ``renderView`` 添加进来的绝佳位置。例如：
 
 .. code-block:: objc
    :linenos:
@@ -237,7 +237,7 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 加载角色
 ^^^^^^^^^
 
-配置完资源和缓存目录，接下来就是载入一个角色。为了加载一个角色，我们需要角色的人脸贴图文件和人脸target文件。这两个文件一般可通过重建服务获得，详见：:ref:`人脸服务`
+配置完资源和缓存目录，接下来就是载入一个角色。为了加载一个角色，我们需要角色的人脸贴图文件和人脸 target 文件。这两个文件一般可通过重建服务获得，详见：:ref:`人脸服务`
 
 假设 ``media`` 目录下已经存在着人脸贴图文件 ``face/face1.jpg`` 和人脸target文件 ``face/face1.target``，则可以通过如下方法载入一个女性（``female``）角色
 
@@ -280,9 +280,9 @@ SDK需要取得有效的license文件才可以使用，为此，我们可以在�
 
 **A**：``AWCharacter`` 是一个角色的配置类，不是角色本身。如果想要移除角色，需要调用 ``AWCharacter`` 的 ``remove`` 方法。
 
-**Q**：我按照上面的配置，但 ``engineEndLoading`` 并没有回调
+**Q**：我已经按照上面的方式进行配置了，但为什么 ``engineEndLoading`` 依然没有回调？
 
-**A**：有可能哪里出错了，可以实现 ``AWSDKDelegate`` 的 ``engineError:`` 方法，查看错误提示。
+**A**：有可能哪里出错了，可以实现 ``AWSDKDelegate`` 的 ``engineError:`` 协议方法，查看错误提示。
 
 
 
@@ -315,7 +315,8 @@ SDK 设计理念
    }];
 
 表示将角色的位置恢复到默认值。
-    
+
+注意：**和 ``setConfigs`` 整体的增量更新不同，单个键值对里的值，在更新的时候总是被替换更新，而不是增量更新。**
 
 线程
 ~~~~~~~~~~~
