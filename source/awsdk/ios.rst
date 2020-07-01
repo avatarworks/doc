@@ -607,7 +607,7 @@ SDK 提供了丰富的变形参数，具体可查询：
       AWCharacterConfigKeyGender: gender1
    }];
    
-   // 创建第二个角色，角色id可以任意指定，但不能是 AWDefaultCharacterName
+   // 创建第二个角色，角色id可以任意指定
    AWCharacter* secondCharacter = [[AWCharacter alloc] initWithCharacterId:@"lily"];
    [secondCharacter setConfigs:@{
       AWCharacterConfigKeyFaceTarget: faceTarget2,
@@ -615,7 +615,7 @@ SDK 提供了丰富的变形参数，具体可查询：
       AWCharacterConfigKeyGender: gender2
    }];
    
-   // 创建第三个角色，角色id可以任意指定，但不能是 AWDefaultCharacterName
+   // 创建第三个角色，角色id可以任意指定
    AWCharacter* thirdCharacter = [[AWCharacter alloc] initWithCharacterId:@"lucy"];
    [thirdCharacter setConfigs:@{
       AWCharacterConfigKeyFaceTarget: faceTarget3,
