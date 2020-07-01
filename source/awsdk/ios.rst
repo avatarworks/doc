@@ -674,7 +674,12 @@ AWCamera
       AWCameraConfigKeyPosition: [AWValue valueOfVector3:AWVector3Make(0, 100, 180)],
    }];
 
-在这个特写镜头里，我们需要指定特写镜头的id号
+在这个特写镜头里，我们需要指定特写镜头的 id 号。另外， ``AWCameraConfigKeyIndex`` 表示多个镜头在层叠过程中的排列顺序，值越大，镜头在屏幕中越靠外；``AWCameraConfigKeyViewport`` 表示镜头的视窗区域，即显示在 ``renderView`` 的指定区域中。
+
+镜头的背景图
+^^^^^^^^^^
+
+可以通过 ``AWCameraConfigKeyBackImage`` 指定一张背景图显示在镜头所在的视窗中。默认采用“等比例充满”的方式在视窗中平铺背景图片。
 
 AWPuppet
 ~~~~~~~~~~~~~~~~~
