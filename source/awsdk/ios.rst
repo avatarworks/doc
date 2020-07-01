@@ -841,6 +841,10 @@ AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都
 
 其中 ``boneName`` 可以从这两张图中查询到
 
+.. image:: /_static/img/身体骨骼名称.jpg
+
+.. image:: /_static/img/手掌骨骼名称.jpg
+
 AWResourceManager
 ~~~~~~~~~~~~~~~~~
    
