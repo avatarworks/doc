@@ -75,41 +75,41 @@ SDK 集成
 
 SDK 需要取得有效的 license 文件才可以使用。为此，我们可以在合适的地方（在 SDK 使用其他 API 之前）调用 ``setLicense`` 接口，导入 license 内容。例如，我们可以在 ``AppDelegate.m`` 中这样使用 license 文件：
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   #import "AppDelegate.h"
-   #import <AWSDK/AWSDK.h>
+    public class MainActivity extends AppCompatActivity {
 
-   @interface AppDelegate ()
-   
-   @end
+        ...
+        
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            ...
+            setupLicense();
+            ...
+        }
+    
+       private void setupLicense() {
+            String license = "";
+            try {
+                InputStream stream = getAssets().open("license.hj");
 
-   @implementation AppDelegate
-   
-   ...
-   
-   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-       // Override point for customization after application launch.
-       [self setupLicense];
-       return YES;
-   }
-   
-   - (void)setupLicense
-   {
-      NSError *error;
-      NSString *filepath = [[NSBundle mainBundle] pathForResource:@"license" ofType:@"hj"];
-      NSString *license = [NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:&error];
-      if (error)
-         NSLog(@"Error reading file: %@", error.localizedDescription);
-      NSTimeInterval expired = [[AWSDK sharedSDK] setLicense:license];
-      NSDate *date = [NSDate dateWithTimeIntervalSince1970:expired];
-      NSLog(@"License过期于：%@", date);
-   }
-   
-   ...
-   
-   @end
+                int size = stream.available();
+                byte[] buffer = new byte[size];
+                stream.read(buffer);
+                stream.close();
+                license = new String(buffer);
+            } catch (IOException e) {
+                // Handle exceptions here
+            }
+            long expired = AWSDK.getInstance().setLicense(license);
+            Log.i(TAG, "license expired in " + expired);
+        }
+        
+        ...
+    }
 
 这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保 license 文件 ``license.hj`` 被正确拷贝到指定的目录中，如下
 
