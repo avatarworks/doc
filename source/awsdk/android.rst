@@ -73,7 +73,7 @@ SDK 集成
 使用 license
 ~~~~~~~~
 
-SDK 需要取得有效的 license 文件才可以使用。为此，我们可以在合适的地方（在 SDK 使用其他 API 之前）调用 ``setLicense`` 接口，导入 license 内容。例如，我们可以在 ``AppDelegate.m`` 中这样使用 license 文件：
+SDK 需要取得有效的 license 文件才可以使用。为此，我们可以在合适的地方（在 SDK 使用其他 API 之前）调用 ``setLicense`` 接口，导入 license 内容。例如，我们可以在 ``MainActivity.java`` 中这样使用 license 文件：
 
 .. code-block:: java
     :linenos:
@@ -111,53 +111,18 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
         ...
     }
 
-这个例子中，我们把 ``license.hj`` 文件放在了 ``mainBundle`` 里面了，因此需要确保 license 文件 ``license.hj`` 被正确拷贝到指定的目录中，如下
+这个例子中，我们把 ``license.hj`` 文件放在了 ``assets`` 目录里面了，如下
 
 .. image:: /_static/img/awsdk_license_bundle.png
 
 当然， ``license.hj`` 放在任何目录都可以，只要程序能读取出内容，并将内容传给 ``AWSDK`` 的 ``setLicense`` 接口即可。
 
-添加生命周期方法
-~~~~~~~~
 
-将如下生命周期方法添加到 ``AppDelegate.m`` 中
-
-.. code-block:: objc
-   :linenos:
-   
-   - (void)applicationWillTerminate:(UIApplication *)application
-   {
-       [[AWSDK sharedSDK] applicationWillTerminate];
-   }
-
-   - (void)applicationDidBecomeActive:(UIApplication *)application
-   {
-       [[AWSDK sharedSDK] applicationDidBecomeActive];
-   }
-
-   - (void)applicationWillResignActive:(UIApplication *)application
-   {
-       [[AWSDK sharedSDK] applicationWillResignActive];
-   }
-   - (void)applicationWillEnterForeground:(UIApplication *)application
-   {
-       [[AWSDK sharedSDK] applicationWillEnterForeground];
-   }
-
-   - (void)applicationDidEnterBackground:(UIApplication *)application
-   {
-       [[AWSDK sharedSDK] applicationDidEnterBackground];
-   }
-
-   - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
-   {
-       [[AWSDK sharedSDK] applicationDidReceiveMemoryWarning];
-   }
 
 初始化虚拟人逻辑
 ~~~~~~~~~~~
 
-创建虚拟人用的 ViewController
+创建虚拟人用的 Activity
 ^^^^^^^^
 - 创建 View Controller，选择 subclass 为 ``UIViewController`` ，如图所示
 
