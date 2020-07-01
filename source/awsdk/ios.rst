@@ -711,7 +711,7 @@ AWRecorder 提供了截屏和生成 GIF 的功能。
    - (void)takeScreenShot:(AWRect)rect;
 
 
-截屏是个异步操作，截屏的结果可以通过响应 ``AWRecorderDelegate`` 这个协议的如下若干方法来获得
+截屏是个异步操作，截屏的结果可以通过实现 ``AWRecorderDelegate`` 协议的如下若干方法来获得
 
 .. code-block:: objc
    :linenos:
