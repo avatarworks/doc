@@ -212,16 +212,16 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 .. image:: /_static/img/awsdk_media_bundle.png
 
-对于需要将内置资源从 AWSDK.framework 中分离出来的情况，可通过如下方式实现
+对于需要将内置基础资源从 AWSDK.framework 中分离出来的情况，可通过如下方式实现
 
 .. code-block:: objc
    :linenos:
    
    [[AWResourceManager sharedManager] setBaseDirectory:baseDir];
    
-其中，``baseDir`` 是分离出来的资源目录。
+其中，``baseDir`` 是分离出来的基础资源目录。
 
-定义好资源和缓存目录，我们就可以在 ``engineEndLoading`` 调用 ``setupDirs`` 了。如下
+定义好资源和缓存目录，就可以在 ``engineEndLoading`` 调用 ``setupDirs`` 了。如下
 
 .. code-block:: objc
    :linenos:
