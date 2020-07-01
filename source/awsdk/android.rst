@@ -55,15 +55,15 @@ SDK 集成
 导入 SDK
 ^^^^^^^
 
-- 在工程配置中，将 awsdk.aar 导入工程中的 libs 目录下
+- 在工程配置中，将 ``awsdk.aar`` 导入工程中的 ``libs`` 目录下
 
 修改 build.gradle
 ^^^^^^^^^^
 
-双击打开您的工程目录下的 build.gradle，确保已经添加了如下依赖，如下所示：
+双击打开您的工程目录下的 ``build.gradle``，确保已经添加了如下依赖，如下所示：
 
 .. code-block:: guess
-   :linenos:
+  :linenos:
   
   dependencies {
     implementation files('libs/sdk-release.aar')
