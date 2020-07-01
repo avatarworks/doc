@@ -438,7 +438,7 @@ SDK 提供了丰富的变形参数，具体可查询：
 - :ref:`男性角色变形 Target 查询表` 
 - :ref:`女性角色变形 Target 查询表`
 
-假设我们需要给女性角色应用如下变形：
+假设我们需要给女性角色应用如下变形，
 
 - 可爱脸型，id：20005，权重：0.625
 - 模特体型，id：23002，权重：1
@@ -839,7 +839,7 @@ AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都
                   characterId:(NSString *_Nonnull)characterId
                       queryId:(NSString *_Nonnull)queryId;
 
-其中 ``boneName`` 可以从这两张图中查询到
+其中 ``boneName`` 可以从这两张图中查询到：
 
 .. image:: /_static/img/身体骨骼名称.jpg
 
@@ -847,6 +847,25 @@ AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都
 
 AWResourceManager
 ~~~~~~~~~~~~~~~~~
+   
+AWResourceManager 作为 SDK 的资源管理器，可以设置缓存路径、添加多个资源目录（可设置路径资源被搜索到的优先级）和释放资源等操作。
+
+- 引擎加载成功后的第一件事情就应该通过 ``setCacheDirectory:`` 设置缓存路径。**缓存路径只有一个，里面的内容在SDK执行期间严禁做清除操作，否则可能会出现渲染错误。** 
+
+- 为了让 SDK 使用资源，还必须通过 ``addResourceDirectory:`` 或 ``addResourceDirectory:withPriority`` 添加资源路径。虽然下面这句话看起来像是一句废话，但还是请开发者一定注意：**在 SDK 使用某个资源之前，该资源必须存在与某个资源路径下。**
+
+- 一般情况下，开发者可不需要理会 ``setBaseDirectory:`` 这个方法。但对于有需求将基础资源包和可执行文件分离的情况下，开发者应该调用 ``setBaseDirectory:`` 来指定基础资源包的路径。 
+
+- 为了加快程序的执行，SDK 默认会把曾经加载过的资源缓存到内存中。开发者可以随时通过调用 ``releaseResources`` 释放掉所有当前可释放的资源。
+
+
+
+
+   
+   
+   
+   
+   
    
    
    
