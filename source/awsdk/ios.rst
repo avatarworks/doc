@@ -801,7 +801,7 @@ AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都
                    queryId:(NSString *_Nonnull)queryId;
                    
 
-查询角色部位信息
+查询屏幕坐标点落在角色部位上的信息
 ^^^^^^^^^^^
 
 .. code-block:: objc
