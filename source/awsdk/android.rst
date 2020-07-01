@@ -45,7 +45,7 @@ AWSDK 是一个适用于 Android 的虚拟人解决方案。
 
 .. _下载地址: http://developer.android.com/intl/zh-cn/sdk/index.html
 
-Android 官方开发 SDK，官方 `下载地址`_
+- Android 官方开发 SDK，官方 `下载地址`_
 
 .. _下载地址: http://developer.android.com/intl/zh-cn/sdk/index.html
 
@@ -55,7 +55,7 @@ SDK 集成
 导入 SDK
 ^^^^^^^
 
-- 在工程配置中，将 ``awsdk.aar`` 导入工程中的 ``libs`` 目录下
+在工程配置中，将 ``awsdk.aar`` 导入工程中的 ``libs`` 目录下
 
 修改 build.gradle
 ^^^^^^^^^^
