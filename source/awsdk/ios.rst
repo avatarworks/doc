@@ -370,12 +370,38 @@ SDK 完全跑在一个独立的线程上，从而使得 SDK 的内部操作，�
 功能使用
 =======================
 
+人脸重建授权码
+~~~~~~~~~~~~~~~~~~~
+
+开发者可通过 :ref:`人脸服务` 获得用于角色显示所需的脸部贴图和脸部 target。:ref:`人脸服务` 需要的 **签名认证串** 可通过如下方法获得：
+
+
+.. code-block:: objc
+   :linenos:
+   
+   [[AWSDK sharedSDK] genAuthString];
+
+
+全局背景色
+~~~~~~~~~~~~~~~~~~~
+
+``renderView`` 可通过如下方式设置全局背景色
+
+.. code-block:: objc
+   :linenos:
+   
+   // 将全局背景色设置为白色
+   [[AWSDK sharedSDK] setFogColor:[UIColor whiteColor]];
+
+
 AWCharacter
 ~~~~~~~~~~~~~~~~~~~~
 
+``AWCharacter`` 用于配置角色的状态，使角色显示在 ``renderView`` 中。
+
 监听角色的状态变化
 ^^^^^^^^^^^^^^^^^^^
-``AWCharacter`` 支持 ``AWCharacterDelegate`` 协议，后者可以监听角色的各种状态变化，如：
+通过实现 ``AWCharacter`` 的 ``AWCharacterDelegate`` 协议，程序可以监听角色的各种状态变化，如：
 
 - 即将加载 ``characterWillLoad:``
 - 成功加载 ``characterDidLoad:``
