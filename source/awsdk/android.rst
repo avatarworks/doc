@@ -126,9 +126,9 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 创建虚拟人用的 Activity
 ^^^^^^^^
-- 创建 Activity，选择 subclass 为 ``UIViewController`` ，如图所示
+- 创建一个空 Activity，如图所示
 
-.. image:: /_static/img/xcode_create_viewcontroller.png
+.. image:: /_static/img/awsdk_create_activity.png
 
 添加引用
 ^^^^^^^^
