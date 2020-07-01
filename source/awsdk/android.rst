@@ -57,6 +57,8 @@ SDK 集成
 
 在工程配置中，将 ``awsdk.aar`` 导入工程中的 ``libs`` 目录下
 
+.. image:: /_static/img/awsdk_android_studio_aar.png
+
 修改 build.gradle
 ^^^^^^^^^^
 
@@ -113,7 +115,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 这个例子中，我们把 ``license.hj`` 文件放在了 ``assets`` 目录里面了，如下
 
-.. image:: /_static/img/awsdk_license_bundle.png
+.. image:: /_static/img/awsdk_license_assets.png
 
 当然， ``license.hj`` 放在任何目录都可以，只要程序能读取出内容，并将内容传给 ``AWSDK`` 的 ``setLicense`` 接口即可。
 
