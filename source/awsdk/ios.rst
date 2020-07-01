@@ -212,7 +212,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 .. image:: /_static/img/awsdk_media_bundle.png
 
-对于需要将内置基础资源从 AWSDK.framework 中分离出来的情况，可通过如下方式实现
+对于需要将内置基础资源从 AWSDK.framework 中分离出来的情况，我们需要指定基础资源的路径，如下
 
 .. code-block:: objc
    :linenos:
