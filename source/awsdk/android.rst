@@ -28,7 +28,7 @@ AWSDK 是一个适用于 Android 的虚拟人解决方案。
   :linenos:
   
   -keep class com.avatarworks.** { *; }
-  -keep class com.libsdl.** {*;}
+  -keep class com.libsdl.** { *; }
 
 前置条件
 ~~~~~~~~
@@ -66,7 +66,7 @@ SDK 集成
   :linenos:
   
   dependencies {
-    implementation files('libs/sdk-release.aar')
+    implementation files('libs/awsdk.aar')
   }
 
 
@@ -124,7 +124,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 创建虚拟人用的 Activity
 ^^^^^^^^
-- 创建 View Controller，选择 subclass 为 ``UIViewController`` ，如图所示
+- 创建 Activity，选择 subclass 为 ``UIViewController`` ，如图所示
 
 .. image:: /_static/img/xcode_create_viewcontroller.png
 
