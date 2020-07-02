@@ -136,7 +136,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 找到 ``CharacterActivity`` 类，添加生命周期方法，如下
 
-.. code-block:: objc
+.. code-block:: java
     :linenos:
     
     @Override
@@ -188,7 +188,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 在 ``CharacterActivity`` 类中声明实现 ``AWEngineListener``，并在 ``onCreate`` 监听引擎回调。如下
 
-.. code-block:: objc
+.. code-block:: java
     :linenos:
    
     public class CharacterActivity extends AppCompatActivity implements AWEngineListener {
@@ -237,7 +237,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 回到 ``CharacterActivity.java``，我们需要将 SDK 提供的 ``renderView`` 添加到根视图中，如下
 
-.. code-block:: objc
+.. code-block:: java
     :linenos:
     
     @Override
@@ -276,7 +276,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 ^^^^^^^^^
 引擎启动后，我们需要配置资源和缓存目录。
 
-.. code-block:: objc
+.. code-block:: java
     :linenos:
    
     private void setupDirs() {
@@ -368,7 +368,7 @@ SDK 设计理念
 
 整个 SDK 的设计理念是维护一个全局的状态（State）。这个全局的状态又由若干个子状态组成，如一个角色就构成了一个子状态，一个镜头也构成了一个子状态。每个子状态分别包含了若干个键值对（key-value pair），SDK 会响应键（key）对应的值（value）是否发生变化来更新画面。例如，对于一个角色，当性别 ``AWCharacter.ConfigKeyGender`` 的值从 ``female`` 变成了 ``male``，画面中的角色就会从女性变成了男性。这些键值对的更新，一般可通过对应 ``Config`` 类的 ``setKeyValue`` 方法来指定，然后通过 ``commit`` 提交更改。例如，
 
-.. code-block:: objc
+.. code-block:: java
     :linenos:
 
     // 设置配置信息
@@ -383,7 +383,7 @@ SDK 设计理念
 
 若想让某一键值对恢复到默认值，可以将这个键值对的值置为 ``null``，例如
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    config.setKeyValue(AWCharacter.ConfigKeyPosition, null);
@@ -397,7 +397,7 @@ SDK 设计理念
 
 SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，在一般情况下不影响主线程（或UI线程）的性能。但正如所有异步操作可能带来的同步问题一样，开发者在主线程更新 SDK 的时候，也不可避免的要注意线程同步问题。为了方便开发者使用，对于 **同类型** 的操作，例如两个更新角色的操作，SDK 会将每一步操作丢入一个 FIFO 队列中，使开发者不需要等待上一个操作的完成，就可以去处理下一个操作。同时，SDK 还提供了解决队列拥堵的机制：即当前一个操作因为耗时而堵塞队列时，后面的操作会自动合并成一个大的操作，使得在前一个操作结束以后，队列后面遗留的操作可以直接同步到最终想要的状态。例如，
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    // 操作1 -> 更新脸部Target、脸部贴图和性别
@@ -424,7 +424,7 @@ SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，�
    
 操作1是一个耗时的操作，这会造成操作2到操作5滞留在队列中。但是，当操作1执行结束后，操作2到操作5会自动合并成如下一个 *等价* 的操作，
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    // 等价的操作: 更新到位置3 + 更新旋转角
@@ -445,7 +445,7 @@ SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，�
 开发者可通过 :ref:`人脸服务` 获得用于角色显示所需的脸部贴图和脸部 target。:ref:`人脸服务` 需要的 **签名认证串** 可通过如下方式获得：
 
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    AWSDK.getInstance().genAuthString();
@@ -456,7 +456,7 @@ SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，�
 
 ``renderView`` 可通过如下方式设置全局背景色
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    // 将全局背景色设置为白色
@@ -470,16 +470,16 @@ AWCharacter
 
 监听角色的状态变化
 ^^^^^^^^^^^^^^^^^^^
-通过实现 ``AWCharacter`` 的 ``AWCharacterDelegate`` 协议，程序可以监听角色的各种状态变化，如：
+通过监听 ``AWCharacter.CallbackListener``，程序可以得到角色的各种状态变化，如：
 
-- 即将加载 ``characterWillLoad:``
-- 成功加载 ``characterDidLoad:``
-- 加载失败 ``characterLoadFailed:withError:``
-- 即将更新 ``characterWillUpdate:``
-- 成功更新 ``characterDidUpdate:``
-- 更新失败 ``characterUpdateFailed:withError:``
-- 即将释放 ``characterWillRelease:``
-- 成功释放 ``characterDidRelease:``
+- 即将加载 ``void characterWillLoad(String characterId)``
+- 成功加载 ``void characterDidLoad(String characterId)``
+- 加载失败 ``void characterLoadFailed(String characterId, Error error)``
+- 即将更新 ``void characterWillUpdate(String characterId)``
+- 成功更新 ``void characterDidUpdate(String characterId)``
+- 更新失败 ``void characterUpdateFailed(String characterId, Error error)``
+- 即将释放 ``void characterWillRelease(String characterId)``
+- 成功释放 ``void characterDidRelease(String characterId)``
 
 等等。
 
@@ -502,22 +502,24 @@ AWCharacter
    
 ``face`` 文件夹我们已经在前文介绍了，这里不再赘述。``dress`` 文件夹存放的资源是用于给角色穿戴的服装、发型、鞋子等。我们可以使用如下方式给角色穿上这些服饰：
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
-   NSArray* dressArr = @[
-      @"dress/hair",
-      @"dress/shirt",
-      @"dress/pant",
-      @"dress/shoe",
-   ];
-   NSData* dressData = [NSJSONSerialization dataWithJSONObject:dressArr options:NSJSONWritingPrettyPrinted error:NULL];
-   AWValue* dress = [AWValue valueOfJson:dressData];
-   [character setConfigs:@{
-      AWCharacterConfigKeyDressArray: dress
-   }];
+    String [] dressArray = {
+        "dress/hair",
+        "dress/shirt",
+        "dress/pant",
+        "dress/shoe",
+    };
+    try {
+        JSONArray dresses = new JSONArray(dressArray);
+        config.setKeyValue(AWCharacter.ConfigKeyDressArray, AWValue.valueOfJsonArray(dresses));
+        config.commit()
+    } catch (JSONException e) {
+
+    }
    
-需要注意的是，``dressArr`` 指定的服饰资源列表中，我们需要把 ``.zip`` 后缀去掉。
+需要注意的是，``dressArray`` 指定的服饰资源列表中，我们需要把 ``.zip`` 后缀去掉。
 
 
 给角色变形
@@ -536,20 +538,35 @@ SDK 提供了丰富的变形参数，具体可查询：
 
 那么，就需要通过如下代码来实现角色的变形：
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
-   NSArray* targetArr = @[
-      @{@"id": @"20005", @"weight": 0.625},
-      @{@"id": @"23002", @"weight": 1},
-      @{@"id": @"23503", @"weight": 0.32}
-   ];
-   NSData* targetData = [NSJSONSerialization dataWithJSONObject:targetArr options:NSJSONWritingPrettyPrinted error:NULL];
-   AWValue* targets = [AWValue valueOfJson:targetData];
-   [character setConfigs:@{
-      AWCharacterConfigKeyTargetArray: targets
-   }];
+   ArrayList array = new ArrayList();
+   try {
+        JSONObject target1 = new JSONObject();
+        JSONObject target2 = new JSONObject();
+        JSONObject target3 = new JSONObject();
+        
+        target1.put("id", "20005");
+        target1.put("weight", 0.625f);
 
+        target2.put("id", "23002");
+        target2.put("weight", 1.0f);
+        
+        target3.put("id", "23503");
+        target3.put("weight", 0.32f);
+        
+        array.add(target1);
+        array.add(target2);
+        array.add(target3);
+        
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+
+    JSONArray list = new JSONArray(array);
+    config.setKeyValue(AWCharacter.ConfigKeyTargetArray, AWValue.valueOfJsonArray(list));
+    config.commit();
 
 让角色播放动画
 ^^^^^^^^^^^^^^^^^^^
@@ -580,13 +597,13 @@ SDK 提供了丰富的变形参数，具体可查询：
 
 和肢体动画相关的键有：
 
-- ``AWCharacterConfigKeyAnimation`` 动画本身
-- ``AWCharacterConfigKeyAnimationLoop`` 动画是否循环，如果不循环，动画播放结束后会停留在最后一帧
-- ``AWCharacterConfigKeyAnimationFade`` 在两个动画之间切换的过渡时间
+- ``AWCharacter.ConfigKeyAnimation`` 动画本身
+- ``AWCharacter.ConfigKeyAnimationLoop`` 动画是否循环，如果不循环，动画播放结束后会停留在最后一帧
+- ``AWCharacter.ConfigKeyAnimationFade`` 在两个动画之间切换的过渡时间
 
 我们的目标是先让角色播放 ``animation/anim1.zip``，动画结束后播放 ``animation/anim2.zip``，然后回到初始状态。
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    - (AWCharacter *)getCharacter
