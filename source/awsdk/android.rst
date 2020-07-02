@@ -142,15 +142,123 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
    
 添加声明
 ^^^^^^^^
-在 ``CharacterViewController.h`` 头文件中声明支持 ``AWSDKDelegate``，如下
+在 ``CharacterActivity`` 类中声明实现 ``AWEngineListener``，如下
 
 .. code-block:: objc
-   :linenos:
+    :linenos:
    
-   #import <UIKit/UIKit.h>
-   #import <AWSDK/AWSDK.h>
-   @interface CharacterViewController : UIViewController <AWSDKDelegate>
-   @end
+    public class CharacterActivity extends AppCompatActivity implements AWEngineListener {
+
+        ...
+
+        @Override
+        public void onEngineLoadStart() {
+
+        }
+
+        @Override
+        public void onEngineLoadEnd() {
+
+        }
+
+        @Override
+        public void onEngineSuspended() {
+
+        }
+
+        @Override
+        public void onEngineRestored() {
+
+        }
+
+        @Override
+        public void onEngineError(Error error) {
+
+        }
+    }
+    
+找到 ``CharacterActivity`` 类，添加声明周期方法，如下
+
+.. code-block:: objc
+    :linenos:
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_character);
+        AWSDK.getInstance().onCreate(this);
+    }
+    
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AWSDK.getInstance().onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        AWSDK.getInstance().onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AWSDK.getInstance().onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        AWSDK.getInstance().onDestory();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        AWSDK.getInstance().onWindowsFocusChanged(hasFocus);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        AWSDK.getInstance().onLowMemory();
+    }
+    
+打开布局文件 ``app/src/main/res/layout/activity_character.xml``，切换到 ``Design`` 模式，将 ``Component Tree`` 里程序自动创建的 ``TextView`` 移除掉，将 ``ConstraintLayout`` 的 id 号指定为 ``root``，如图
+
+.. image:: /_static/img/awsdk_character_activity_layout.png
+
+回到 ``CharacterActivity.java``，我们需要将 SDK 提供的 ``renderView`` 添加到根视图中，如下
+
+.. code-block:: objc
+    :linenos:
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_character);
+        AWSDK.getInstance().onCreate(this);
+        addRenderView();
+    }
+    
+    public void addRenderView() {
+        ConstraintLayout parent = findViewById(R.id.root);
+        View renderView = AWSDK.getInstance().getRenderView();
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+        );
+
+        if (renderView.getParent() == null) {
+            parent.addView(renderView, 0, layoutParams);
+        } else {
+            if (renderView.getParent() != parent) {
+                ((ViewGroup)renderView.getParent()).removeView(renderView);
+                parent.addView(renderView, 0, layoutParams);
+            }
+        }
+    }
 
 在 ``CharacterViewController.m`` 源文件中，找到 ``- (void)viewDidLoad`` 方法，我们需要在这个方法中启动引擎。
 
