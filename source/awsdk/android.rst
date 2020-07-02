@@ -801,41 +801,41 @@ AWRecorder 提供了截屏和生成 GIF 的功能。
 
 截屏提供了两个接口，分别是：
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
 
    /**
     * @brief 截取整个屏幕的内容。
     */
-   - (void)takeScreenShot;
+   static public void takeScreenShot();
 
    /**
     * @brief 截取屏幕指定区域的内容。
     * @param rect 指定屏幕的渲染区域，单位是像素。
     */
-   - (void)takeScreenShot:(AWRect)rect;
+   static public void takeScreenShot(AWValue.AWRect rect);
 
 
-截屏是个异步操作，截屏的结果可以通过实现 ``AWRecorderDelegate`` 协议的如下若干方法来获得
+截屏是个异步操作，截屏的结果可以通过监听 ``AWRecorder.ScreenShotListener`` 来获得
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    /**
-    * @brief 开始截屏的回调
+    * 开始截屏的回调
     */
-   - (void)screenShotStart;
+   void onScreenShotStart();
 
    /**
-    * @brief 结束截屏的回调
+    * 结束截屏的回调
     */
-   - (void)screenShotEnd:(UIImage *_Nonnull)screenShot;
+   void onScreenShotEnd(Bitmap bitmap);
 
    /**
-    * @brief 截屏失败的回调
+    * 截屏失败的回调
     * @param error 错误信息
     */
-   - (void)screenShotFailed:(NSError * _Nonnull)error;
+   void onScreenShotFailed(Error error);
 
 
 生成 GIF
@@ -847,18 +847,17 @@ AWRecorder 提供了截屏和生成 GIF 的功能。
 AWQuery
 ~~~~~~~~~~~~~~~~~
 
-AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都需要指定本次查询的 ``queryId``，用于标识查询。查询的结果可以通过实现 ``AWQueryDelegate`` 协议方法获得：
+AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都需要指定本次查询的 ``queryId``，用于标识查询。查询的结果可以通过监听 ``AWQuery.CallbackListener`` 来获得：
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    /**
     * @brief 查询操作的回调
-    * @param result 查询的结果
     * @param queryId 查询的标识id
+    * @param result 查询的结果
     */
-   -(void)onGetQueryResult:(NSDictionary *_Nonnull)result
-                   queryId:(NSString *_Nonnull)queryId;
+   void queryDidGetResult(String queryId, JSONObject result);
 
 
 当 ``result`` 的结果是空的时候，说明没查询到任何信息，说明这是一次无效的查询。
@@ -867,113 +866,98 @@ AWQuery 提供了异步查询引擎内部相关信息的机制。每次查询都
 查询角色信息
 ^^^^^^^^^^^
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   /**
-    * @brief 查询角色信息
-    * @param keys 角色信息的关键字，例如AWCharacterConfigKeyGender, AWCharacterConfigKeyPosition等
-    * @param characterId 角色的唯一标识
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryCharacterInfo:(NSArray<NSString *> *_Nonnull)keys
-                  characterId:(NSString *_Nonnull)characterId
-                      queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询角色信息
+     * @param queryId 本次查询的标识id
+     * @param characterId 角色的唯一标识
+     * @param keys 角色信息的关键字，例如AWCharacter.ConfigKeyPosition, AWCharacter.ConfigKeyGender等
+     */
+    public static void queryCharacterInfo(String queryId, String characterId, String[] keys);
                    
 
 查询镜头信息
 ^^^^^^^^^^^
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
 
-   /**
-    * @brief 查询主镜头的信息
-    * @param keys 角色信息的关键字，例如AWCameraConfigKeyPosition, AWCameraConfigKeyRotation等
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryCameraInfo:(NSArray<NSString *> *_Nonnull)keys
-                   queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询主镜头的信息
+     * @param queryId 本次查询的标识id
+     * @param keys 镜头信息的关键字，例如AWCamera.ConfigKeyPosition, AWAWCamera.ConfigKeyRotation等
+     */
+    public static void queryCameraInfo(String queryId, String[] keys);
 
-   /**
-    * @brief 查询指定镜头的信息
-    * @param keys 角色信息的关键字，例如AWCameraConfigKeyPosition, AWCameraConfigKeyRotation等
-    * @param cameraId 镜头的唯一标识
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryCameraInfo:(NSArray<NSString *> *_Nonnull)keys
-                  cameraId:(NSString *_Nonnull)cameraId
-                   queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询指定镜头的信息
+     * @param queryId 本次查询的标识id
+     * @param cameraId 镜头的唯一标识
+     * @param keys 镜头信息的关键字，例如AWCamera.ConfigKeyPosition, AWAWCamera.ConfigKeyRotation等
+     */
+    public static void queryCameraInfo(String queryId, String cameraId, String[] keys);
                    
 
 查询屏幕坐标点落在角色部位上的信息
 ^^^^^^^^^^^
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   /**
-    * @brief 查询主镜头下，屏幕坐标点是否落在指定角色身上的某个部位
-    * @param screenPoint 屏幕的坐标点，单位是像素
-    * @param characterId 角色的唯一标识
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryCharacterPickUp:(AWVector2)screenPoint
-                    characterId:(NSString *_Nonnull)characterId
-                        queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询主镜头下，屏幕坐标点是否落在指定角色身上的某个部位
+     * @param queryId 本次查询的标识id
+     * @param characterId 角色的唯一标识
+     * @param screenPoint 屏幕的坐标点，单位是像素
+     */
+    public static void queryCharacterPickup(String queryId, String characterId, AWValue.AWVector2 screenPoint);
 
-   /**
-    * @brief 查询指定镜头下，屏幕坐标点是否落在指定角色身上的某个部位
-    * @param screenPoint 屏幕的坐标点，单位是像素
-    * @param characterId 角色的唯一标识
-    * @param cameraId 镜头的唯一标识
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryCharacterPickUp:(AWVector2)screenPoint
-                    characterId:(NSString *_Nonnull)characterId
-                       cameraId:(NSString *_Nonnull)cameraId
-                        queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询指定镜头下，屏幕坐标点是否落在指定角色身上的某个部位
+     * @param queryId 本次查询的标识id
+     * @param characterId 角色的唯一标识
+     * @param cameraId 镜头的唯一标识
+     * @param screenPoint 屏幕的坐标点，单位是像素
+     */
+    public static void queryCharacterPickup(String queryId, String characterId, String cameraId, AWValue.AWVector2 screenPoint);
 
 
 查询坐标变换
 ^^^^^^^^^^^
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   /**
-    * @brief 查询在主镜头下，三维世界坐标（World）中的点映射到屏幕（Screen）中的坐标值
-    * @param worldPoint 三维世界坐标值
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryW2SPoint:(AWVector3)worldPoint
-                 queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询在主镜头下，三维世界坐标（World）中的点映射到屏幕（Screen）中的坐标值
+     * @param queryId 本次查询的标识id
+     * @param worldPoint 三维世界坐标值
+     */
+    public static void queryW2SPoint(String queryId, AWValue.AWVector3 worldPoint);
 
-   /**
-    * @brief 查询在指定镜头下，三维世界坐标（World）中的点映射到屏幕（Screen）中的坐标值
-    * @param worldPoint 三维世界坐标值
-    * @param cameraId 镜头的唯一标识
-    * @param queryId 本次查询的标识id
-    */
-   - (void)queryW2SPoint:(AWVector3)worldPoint
-                cameraId:(NSString *_Nonnull)cameraId
-                 queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询在指定镜头下，三维世界坐标（World）中的点映射到屏幕（Screen）中的坐标值
+     * @param queryId 本次查询的标识id
+     * @param cameraId 镜头的唯一标识
+     * @param worldPoint 三维世界坐标值
+     */
+    public static void queryW2SPoint(String queryId, String cameraId, AWValue.AWVector3 worldPoint);
 
 查询角色身体骨骼点信息
 ^^^^^^^^^^^
 
 .. code-block:: objc
-   :linenos:
+    :linenos:
    
-   /**
-    * @brief 查询指定角色的身体骨骼点信息
-    * @param boneName 骨骼名称，例如head, spine等
-    * @param characterId 角色的唯一标识
-    * @param queryId 本次查询的标识id
-   */
-   - (void)queryCharacterBone:(NSString *_Nonnull)boneName
-                  characterId:(NSString *_Nonnull)characterId
-                      queryId:(NSString *_Nonnull)queryId;
+    /**
+     * 查询指定角色的身体骨骼点信息
+     * @param queryId 本次查询的标识id
+     * @param characterId 角色的唯一标识
+     * @param boneName 骨骼名称，例如head, spine等
+     */
+    public static void queryCharacterBone(String queryId, String characterId, String boneName);
 
 其中 ``boneName`` 可以从这两张图中查询到：
 
@@ -986,11 +970,11 @@ AWResourceManager
    
 AWResourceManager 作为 SDK 的资源管理器，可以设置缓存路径、添加多个资源目录（可设置路径资源被搜索到的优先级）和释放资源等操作。
 
-- 引擎加载成功后的第一件事情就应该通过 ``setCacheDirectory:`` 设置缓存路径。**缓存路径只有一个，里面的内容在SDK执行期间严禁做清除操作，否则可能会出现渲染错误。** 
+- 引擎加载成功后的第一件事情就应该通过 ``setCacheDir`` 设置缓存路径。**缓存路径只有一个，里面的内容在SDK执行期间严禁做清除操作，否则可能会出现渲染错误。** 
 
-- 为了让 SDK 使用资源，还必须通过 ``addResourceDirectory:`` 或 ``addResourceDirectory:withPriority`` 添加资源路径。尽管下面这句话看起来像是一句废话，但还是务必请开发者注意：**SDK 在使用某个资源之前，该资源必须存在于某个资源路径下。**
+- 为了让 SDK 使用资源，还必须通过 ``addResourceDir`` 添加资源路径。尽管下面这句话看起来像是一句废话，但还是务必请开发者注意：**SDK 在使用某个资源之前，该资源必须存在于某个资源路径下。**
 
-- 一般情况下，开发者可不需要理会 ``setBaseDirectory:`` 这个方法。但对于需要将基础资源包和可执行文件分离的情况，开发者应该调用 ``setBaseDirectory:`` 来指定基础资源包的路径。 
+- 一般情况下，开发者可不需要理会 ``setBaseDir`` 这个方法。但对于需要将基础资源包和可执行文件分离的情况，开发者应该调用 ``setBaseDir`` 来指定基础资源包的路径。 
 
 - 为了加快程序的执行，SDK 默认会把曾经加载过的资源缓存到内存中。开发者可以随时通过调用 ``releaseResources`` 释放掉所有当前可释放的资源。
 
