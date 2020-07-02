@@ -242,7 +242,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
         addRenderView();
     }
     
-    public void addRenderView() {
+    private void addRenderView() {
         ConstraintLayout parent = findViewById(R.id.root);
         View renderView = AWSDK.getInstance().getRenderView();
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
@@ -259,34 +259,9 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
             }
         }
     }
-
-在 ``CharacterViewController.m`` 源文件中，找到 ``- (void)viewDidLoad`` 方法，我们需要在这个方法中启动引擎。
-
-.. code-block:: objc
-   :linenos:
-   
-   - (void)viewDidLoad {
-       [super viewDidLoad];
-       // Do any additional setup after loading the view.
-       [AWSDK sharedSDK].delegate = self;
-       if (![AWSDK sharedSDK].engineReady) {
-           [[AWSDK sharedSDK] startEngine];
-       } else {
-           UIView* renderView = [AWSDK sharedSDK].renderView;
-           [self.view insertSubview:renderView atIndex:0];
-       }
-   }
-   
-在这个方法中，我们首先指定好 ``AWSDK`` 的 ``delegate``，然后判断引擎是否准备好。如果没准备好，就启动引擎，否则就将 SDK 提供的 ``renderView`` 插入到 ``CharacterViewController`` 的 ``view`` 中。``renderView`` 是一个将引擎内容渲染出来的视图，当引擎未启动的时候，``renderView`` 是个空指针，只有当引擎准备好的时候，``renderView`` 才有值。那么，我们该如何知道 ``renderView`` 什么时候不是空指针，从而可以将其添加到某个 ``View`` 呢？引擎准备好的时候，会调用 ``AWSDKDelegate`` 的 ``engineEndLoading`` 方法，这个地方就是将 ``renderView`` 添加进来的绝佳位置。例如：
-
-.. code-block:: objc
-   :linenos:
-   
-   - (void)engineEndLoading
-   {
-       UIView* renderView = [AWSDK sharedSDK].renderView;
-       [self.view insertSubview:renderView atIndex:0];
-   }
+    
+    
+只要 ``renderView`` 被添加到视图中，引擎就会开始启动。
 
 **【特别注意！！！引擎是一个单例，一旦启动就无法关闭。】**
 
@@ -295,45 +270,39 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 引擎启动后，我们需要配置资源和缓存目录。
 
 .. code-block:: objc
-   :linenos:
+    :linenos:
    
-   - (void)setupDirs
-   {
-       NSURL* documentUrl = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-       NSString * cacheDir = [documentUrl.path stringByAppendingString:@"/cache"];
-       NSString *resDir = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/media"];
-
-       [[AWResourceManager sharedManager] setCacheDirectory:cacheDir];
-       [[AWResourceManager sharedManager] addResourceDirectory:resDir];
-   }
+    private void setupDirs() {
+        AWResourceManager resourceManager = new AWResourceManager(this);
+        resourceManager.setCacheDir(AWResourceManager.DirType.DIR_EXT_CACHE, "");
+        resourceManager.addResourceDir(AWResourceManager.DirType.DIR_ASSETS, "media");
+    }
 
 在这个例子里，我们分别调用了两个 ``AWResourceManager`` 提供的接口来配置资源和缓存路径。其中，
 
-- ``setCacheDirectory`` 用于设置缓存路径。缓存路径要求必须具备可让程序读写的权限，一般像 ``NSDocumentDirectory`` 就是一个理想的路径。
-- ``addResourceDirectory`` 用于添加资源路径。**程序可以添加任意多个资源路径**。为了方便，我们把 ``mainBundle`` 下的 ``media`` 目录添加进了资源路径列表中。为此，请确保 ``media`` 目录能被正确拷贝到 ``mainBundle`` 中，如下
+- ``setCacheDir`` 用于设置缓存路径。缓存路径要求必须具备可让程序读写的权限，在这个例子中，我们指定的缓存路径是 External Cache Directory。
+- ``addResourceDir`` 用于添加资源路径。**程序可以添加任意多个资源路径**。为了方便，我们把放置在 assets 目录下里的 ``media`` 目录添加进了资源路径列表中。
 
-.. image:: /_static/img/awsdk_media_bundle.png
+对于需要将内置基础资源从 awsdk.aar 中分离出来的情况，我们需要调用 ``setBaseDir`` 方法指定基础资源的路径，例如
 
-对于需要将内置基础资源从 AWSDK.framework 中分离出来的情况，我们需要指定基础资源的路径，如下
-
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
-   [[AWResourceManager sharedManager] setBaseDirectory:baseDir];
+   AWResourceManager resourceManager = new AWResourceManager(this);
+   resourceManager.setBaseDir(AWResourceManager.DirType.DIR_EXT_FILE, "awsdk/aar/media");
    
-其中，``baseDir`` 是分离出来的基础资源目录。
+例子里，我们把基础资源包放在了 External File Directory 下的 ``awsdk/aar/media`` 里。
 
-定义好资源和缓存目录，就可以在 ``engineEndLoading`` 调用 ``setupDirs`` 了。如下
+定义好资源和缓存目录，就可以在 ``onEngineLoadEnd`` 调用 ``setupDirs`` 了。如下
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   - (void)engineEndLoading
-   {
-       UIView* renderView = [AWSDK sharedSDK].renderView;
-       [self.view insertSubview:renderView atIndex:0];
-       [self setupDirs];
-   }
+    @Override
+    public void onEngineLoadEnd() {
+        setupDirs();
+    }
+
 
 
 加载角色
@@ -343,37 +312,35 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 
 假设 ``media`` 目录下已经存在着人脸贴图文件 ``face/face1.jpg`` 和人脸 target 文件 ``face/face1.target``，则可以通过如下方法载入一个女性（``female``）角色
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   - (void)loadCharacter
-   {
-       AWCharacter* character = [AWCharacter new];
+    private void loadCharacter() {
+        AWCharacter.Config config = new AWCharacter.Config();
 
-       AWValue* faceTarget = [AWValue valueOfString:@"face/face1.target"];
-       AWValue* faceTexture = [AWValue valueOfString:@"face/face1.jpg"];
-       AWValue* gender = [AWValue valueOfString:@"female"];
+        AWValue facetTarget = AWValue.valueOfString("face/face1.target");
+        AWValue faceTexture = AWValue.valueOfString("face/face1.jpg");
+        AWValue gender = AWValue.valueOfString("female");
 
-       [character setConfigs:@{
-           AWCharacterConfigKeyFaceTarget: faceTarget,
-           AWCharacterConfigKeyFaceTexture: faceTexture,
-           AWCharacterConfigKeyGender: gender,
-       }];
-   }
-   
+        // 设置配置信息
+        config.setKeyValue(AWCharacter.ConfigKeyFaceTarget, facetTarget);
+        config.setKeyValue(AWCharacter.ConfigKeyFaceTexture, faceTexture);
+        config.setKeyValue(AWCharacter.ConfigKeyGender, gender);
+
+        // 提交配置
+        config.commit();
+    }
 
 这个方法可以在 ``setupDirs`` 之后调用，例如
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   - (void)engineEndLoading
-   {
-       UIView* renderView = [AWSDK sharedSDK].renderView;
-       [self.view insertSubview:renderView atIndex:0];
-       [self setupDirs];
-       [self loadCharacter];
-   }
+    @Override
+    public void onEngineLoadEnd() {
+        setupDirs();
+        loadCharacter();
+    }
    
 至此，不出意外的话，角色就可以加载出来了。
 
