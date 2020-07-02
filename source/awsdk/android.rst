@@ -129,55 +129,12 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 - 创建一个空 Activity，如图所示
 
 .. image:: /_static/img/awsdk_create_activity.png
-
-添加引用
-^^^^^^^^
-在 ``CharacterViewController.h`` 头文件中添加引用
-
-.. code-block:: objc
-   :linenos:
-
-   #import <AWSDK/AWSDK.h>
    
    
-添加声明
-^^^^^^^^
-在 ``CharacterActivity`` 类中声明实现 ``AWEngineListener``，如下
+添加生命周期方法
+^^^^^^^^^^
 
-.. code-block:: objc
-    :linenos:
-   
-    public class CharacterActivity extends AppCompatActivity implements AWEngineListener {
-
-        ...
-
-        @Override
-        public void onEngineLoadStart() {
-
-        }
-
-        @Override
-        public void onEngineLoadEnd() {
-
-        }
-
-        @Override
-        public void onEngineSuspended() {
-
-        }
-
-        @Override
-        public void onEngineRestored() {
-
-        }
-
-        @Override
-        public void onEngineError(Error error) {
-
-        }
-    }
-    
-找到 ``CharacterActivity`` 类，添加声明周期方法，如下
+找到 ``CharacterActivity`` 类，添加生命周期方法，如下
 
 .. code-block:: objc
     :linenos:
@@ -223,8 +180,57 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
     public void onLowMemory() {
         super.onLowMemory();
         AWSDK.getInstance().onLowMemory();
+    }   
+   
+   
+监听引擎回调
+^^^^^^^^
+
+在 ``CharacterActivity`` 类中声明实现 ``AWEngineListener``，并在 ``onCreate`` 监听引擎回调。如下
+
+.. code-block:: objc
+    :linenos:
+   
+    public class CharacterActivity extends AppCompatActivity implements AWEngineListener {
+
+        ...
+        
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_character);
+            AWSDK.getInstance().onCreate(this);
+            AWSDK.getInstance().setEngineListener(this);
+        }
+    
+
+        @Override
+        public void onEngineLoadStart() {
+
+        }
+
+        @Override
+        public void onEngineLoadEnd() {
+
+        }
+
+        @Override
+        public void onEngineSuspended() {
+
+        }
+
+        @Override
+        public void onEngineRestored() {
+
+        }
+
+        @Override
+        public void onEngineError(Error error) {
+
+        }
     }
     
+
 打开布局文件 ``app/src/main/res/layout/activity_character.xml``，切换到 ``Design`` 模式，将 ``Component Tree`` 里程序自动创建的 ``TextView`` 移除掉，将 ``ConstraintLayout`` 的 id 号指定为 ``root``，如图
 
 .. image:: /_static/img/awsdk_character_activity_layout.png
@@ -239,6 +245,7 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character);
         AWSDK.getInstance().onCreate(this);
+        AWSDK.getInstance().setEngineListener(this);
         addRenderView();
     }
     
@@ -347,13 +354,9 @@ SDK 需要取得有效的 license 文件才可以使用。为此，我们可以�
 注意事项 Q&A
 ^^^^^^^^
 
-**Q**：为何 ``AWCharacter`` 创建的对象在被释放后，角色依然显示在 ``renderView`` 中？
+**Q**：我已经按照上面的方式进行配置了，但为什么 ``onEngineLoadEnd`` 方法依然没有回调？
 
-**A**：``AWCharacter`` 是一个角色的配置类，不是角色本身。如果想要移除角色，需要调用 ``AWCharacter`` 的 ``remove`` 方法。
-
-**Q**：我已经按照上面的方式进行配置了，但为什么 ``engineEndLoading`` 依然没有回调？
-
-**A**：有可能哪里出错了，可以实现 ``AWSDKDelegate`` 的 ``engineError:`` 协议方法，查看错误提示。
+**A**：有可能哪里出错了，可以在 ``onEngineError`` 方法中断点或打印，查看错误提示。
 
 
 
@@ -363,66 +366,61 @@ SDK 设计理念
 基于状态变化的更新机制
 ~~~~~~~~~~~
 
-整个 SDK 的设计理念是维护一个全局的状态（State）。这个全局的状态又由若干个子状态组成，如一个角色就构成了一个子状态，一个镜头也构成了一个子状态。每个子状态分别包含了若干个键值对（key-value pair），SDK 会响应键（key）对应的值（value）是否发生变化来更新画面。例如，对于一个角色，当性别 ``AWCharacterConfigKeyGender`` 的值从 ``female`` 变成了 ``male``，画面中的角色就会从女性变成了男性。这些键值对的更新，一般可通过对应类的 ``setConfigs`` 方法来实现。例如，
+整个 SDK 的设计理念是维护一个全局的状态（State）。这个全局的状态又由若干个子状态组成，如一个角色就构成了一个子状态，一个镜头也构成了一个子状态。每个子状态分别包含了若干个键值对（key-value pair），SDK 会响应键（key）对应的值（value）是否发生变化来更新画面。例如，对于一个角色，当性别 ``AWCharacter.ConfigKeyGender`` 的值从 ``female`` 变成了 ``male``，画面中的角色就会从女性变成了男性。这些键值对的更新，一般可通过对应 ``Config`` 类的 ``setKeyValue`` 方法来指定，然后通过 ``commit`` 提交更改。例如，
+
+.. code-block:: objc
+    :linenos:
+
+    // 设置配置信息
+    config.setKeyValue(AWCharacter.ConfigKeyFaceTarget, facetTarget);
+    config.setKeyValue(AWCharacter.ConfigKeyFaceTexture, faceTexture);
+    config.setKeyValue(AWCharacter.ConfigKeyGender, gender);
+
+    // 提交配置
+    config.commit();
+
+表示需要对角色的脸部 target、脸部贴图和性别做出改变。对于没有通过 ``setKeyValue`` 中指定的键值对，SDK 会认为那些键值对没有做出更改，从而不响应相应的变化。我们把这种方式叫做 ``Config`` 的增量更新。
+
+若想让某一键值对恢复到默认值，可以将这个键值对的值置为 ``null``，例如
 
 .. code-block:: objc
    :linenos:
    
-   [character setConfigs:@{
-      AWCharacterConfigKeyFaceTarget: faceTarget,
-      AWCharacterConfigKeyFaceTexture: faceTexture,
-      AWCharacterConfigKeyGender: gender,
-   }];
-
-表示需要对角色的脸部target、脸部贴图和性别做出改变。对于没在这一次 ``setConfigs`` 中指定的键值对，SDK 会认为那些键值对没有做出更改，从而不响应相应的变化。我们把这种方式叫做 ``setConfigs`` 的增量更新。
-
-若想让某一键值对恢复到默认值，可以将这个键值对的值置为 ``[AWValue null]``，例如
-
-.. code-block:: objc
-   :linenos:
-   
-   [character setConfigs:@{
-      AWCharacterConfigKeyPosition: [AWValue null]
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyPosition, null);
 
 表示将角色的位置恢复到默认值。
 
-注意：**和 setConfigs 的增量更新有所不同，单个键值对里的值，在更新的时候总是被替换更新，而不是增量更新。** 例如，假设 ``AWCharacterConfigKeyDressArray`` 的前值是 ``@[@"dress1", @"dress2"]``，当再给它赋值 ``@[@"dress2", @"dress3"]`` 时，最终的结果应该就是 ``@[@"dress2", @"dress3"]``，而不是 ``@[@"dress1", @"dress2", @"dress3"]``。
+注意：**和 Config 的增量更新有所不同，单个键值对里的值，在更新的时候总是被替换更新，而不是增量更新。** 例如，假设 ``AWCharacter.ConfigKeyDressArray`` 的前值是 ``["dress1", "dress2"]``，当再给它赋值 ``["dress2", "dress3"]`` 时，最终的结果应该就是 ``["dress2", "dress3"]``，而不是 ``["dress1", "dress2", "dress3"]``。
 
 线程
 ~~~~~~~~~~~
 
-SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，在一般情况下不影响主线程（或UI线程）的性能。但正如所有异步操作可能带来的同步问题一样，开发者在主线程更新SDK的时候，也不可避免的要注意线程同步问题。为了方便开发者使用，对于 **同类型** 的操作，例如两个更新角色的操作，SDK 会将每一步操作丢入一个 FIFO 队列中，使开发者不需要等待上一个操作的完成，就可以去处理下一个操作。同时，SDK 还提供了解决队列拥堵的机制：即当前一个操作因为耗时而堵塞队列时，后面的操作会自动合并成一个大的操作，使得在前一个操作结束以后，队列后面遗留的操作可以直接同步到最终想要的状态。例如，
+SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，在一般情况下不影响主线程（或UI线程）的性能。但正如所有异步操作可能带来的同步问题一样，开发者在主线程更新 SDK 的时候，也不可避免的要注意线程同步问题。为了方便开发者使用，对于 **同类型** 的操作，例如两个更新角色的操作，SDK 会将每一步操作丢入一个 FIFO 队列中，使开发者不需要等待上一个操作的完成，就可以去处理下一个操作。同时，SDK 还提供了解决队列拥堵的机制：即当前一个操作因为耗时而堵塞队列时，后面的操作会自动合并成一个大的操作，使得在前一个操作结束以后，队列后面遗留的操作可以直接同步到最终想要的状态。例如，
 
 .. code-block:: objc
    :linenos:
    
    // 操作1 -> 更新脸部Target、脸部贴图和性别
-   [character setConfigs:@{
-      AWCharacterConfigKeyFaceTarget: faceTarget,
-      AWCharacterConfigKeyFaceTexture: faceTexture,
-      AWCharacterConfigKeyGender: gender,
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyFaceTarget, faceTarget);
+   config.setKeyValue(AWCharacter.ConfigKeyFaceTexture, faceTexture);
+   config.setKeyValue(AWCharacter.ConfigKeyGender, gender);
+   config.commit();
    
    // 操作2 -> 更新到位置1
-   [character setConfigs:@{
-      AWCharacterConfigKeyPosition: position1
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyPosition, position1);
+   config.commit();
    
    // 操作3 -> 更新到位置2
-   [character setConfigs:@{
-      AWCharacterConfigKeyPosition: position2
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyPosition, position2);
+   config.commit();
    
    // 操作4 -> 更新到位置3
-   [character setConfigs:@{
-      AWCharacterConfigKeyPosition: position3
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyPosition, position3);
+   config.commit();
    
    // 操作5 -> 更新旋转角
-   [character setConfigs:@{
-      AWCharacterConfigKeyRotation: rotation
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyRotation, rotation);
+   config.commit();
    
 操作1是一个耗时的操作，这会造成操作2到操作5滞留在队列中。但是，当操作1执行结束后，操作2到操作5会自动合并成如下一个 *等价* 的操作，
 
@@ -430,10 +428,9 @@ SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，�
    :linenos:
    
    // 等价的操作: 更新到位置3 + 更新旋转角
-   [character setConfigs:@{
-      AWCharacterConfigKeyPosition: position3,
-      AWCharacterConfigKeyRotation: rotation
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyPosition, position3);
+   config.setKeyValue(AWCharacter.ConfigKeyRotation, rotation);
+   config.commit();
 
 从上面的例子可以看出，开发者期待的角色最终“位置”和“旋转”应该是 ``position3`` 和 ``rotation``，而这正是自动合并后的结果。
 
@@ -451,7 +448,7 @@ SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，�
 .. code-block:: objc
    :linenos:
    
-   [[AWSDK sharedSDK] genAuthString];
+   AWSDK.getInstance().genAuthString();
 
 
 全局背景色
@@ -463,7 +460,7 @@ SDK 跑在一个完全独立的线程上，从而使得 SDK 的内部操作，�
    :linenos:
    
    // 将全局背景色设置为白色
-   [[AWSDK sharedSDK] setFogColor:[UIColor whiteColor]];
+   AWSDK.getInstance().setFogColor(255, 255, 255, 1);
 
 
 AWCharacter
