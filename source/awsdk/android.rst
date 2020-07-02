@@ -472,14 +472,59 @@ AWCharacter
 ^^^^^^^^^^^^^^^^^^^
 通过监听 ``AWCharacter.CallbackListener``，程序可以得到角色的各种状态变化，如：
 
-- 即将加载 ``void characterWillLoad(String characterId)``
-- 成功加载 ``void characterDidLoad(String characterId)``
-- 加载失败 ``void characterLoadFailed(String characterId, Error error)``
-- 即将更新 ``void characterWillUpdate(String characterId)``
-- 成功更新 ``void characterDidUpdate(String characterId)``
-- 更新失败 ``void characterUpdateFailed(String characterId, Error error)``
-- 即将释放 ``void characterWillRelease(String characterId)``
-- 成功释放 ``void characterDidRelease(String characterId)``
+
+.. code-block:: java
+   :linenos:
+   
+    /**
+     * 角色即将加载的回调方法。
+     * @param characterId 角色id
+     */
+    void characterWillLoad(String characterId);
+
+    /**
+     * 角色加载成功的回调方法。
+     * @param characterId 角色id
+     */
+    void characterDidLoad(String characterId);
+
+    /**
+     * 角色加载失败的回调方法。
+     * @param characterId 角色id
+     * @param error 加载失败的错误信息
+     */
+    void characterLoadFailed(String characterId, Error error);
+
+    /**
+     * 角色即将更新的回调方法。
+     * @param characterId 角色id
+     */
+    void characterWillUpdate(String characterId);
+
+    /**
+     * 角色更新成功的回调方法。
+     * @param characterId 角色id
+     */
+    void characterDidUpdate(String characterId);
+
+    /**
+     * 角色更新失败的回调方法。
+     * @param characterId 角色id
+     * @param error 更新失败的错误信息
+     */
+    void characterUpdateFailed(String characterId, Error error);
+
+    /**
+     * 角色即将释放的回调方法。
+     * @param characterId 角色id
+     */
+    void characterWillRelease(String characterId);
+
+    /**
+     * 角色释放成功的回调方法。
+     * @param characterId 角色id
+     */
+    void characterDidRelease(String characterId);
 
 等等。
 
@@ -604,53 +649,39 @@ SDK 提供了丰富的变形参数，具体可查询：
 我们的目标是先让角色播放 ``animation/anim1.zip``，动画结束后播放 ``animation/anim2.zip``，然后回到初始状态。
 
 .. code-block:: java
-   :linenos:
+    :linenos:
    
-   - (AWCharacter *)getCharacter
-   {
-      static AWCharacter* character = NULL;
-      if (character == NULL) {
-         character = [AWCharacter new];
-         character.delegate = self;
-      }
-      return character;
-   }
-   
-   - (void)playAnimation:(NSString *)anim
-   {
-      AWCharacter* character = [self getCharacter];
-      AWValue* animation;
-      if (anim == null) {
-         animation = [AWValue null];
-      } else {
-         animation = [AWValue valueOfString:anim];
-      }
-      [character setConfigs:@{
-         AWCharacterConfigKeyAnimation: animation,
-         AWCharacterConfigKeyAnimationLoop: [AWValue valueOfBool:NO],
-         AWCharacterConfigKeyAnimationFade: [AWValue valueOfLong:300]
-      }];
-   }
-   
-   - (void)characterAnimationEnd:(NSString *_Nonnull)characterId animation:(AWValue *_Nonnull)animation
-   {
-      if ([[animation stringValue] isEqualToString:@"animation/anim1"]) {
-         [self playAnimation:@"animation/anim2"];
-      } else {
-         [self playAnimation:null];
-      }
-   }
-   
-   - (void)start
-   {
-      [self playAnimation:@"animation/anim1"];
-   }
+    private void playAnimation(String anim) {
+        if (anim == null) {
+            characterConfig.setKeyValue(AWCharacter.ConfigKeyAnimation, null);
+        } else {
+            characterConfig.setKeyValue(AWCharacter.ConfigKeyAnimation, AWValue.valueOfString(anim));
+        }
+        characterConfig.setKeyValue(AWCharacter.ConfigKeyAnimationLoop, AWValue.valueOfBoolean(false));
+        characterConfig.setKeyValue(AWCharacter.ConfigKeyAnimationFade, AWValue.valueOfLong(300));
+        characterConfig.commit();
+    }
+    
+    ...
+    
+    // 角色动画结束的回调方法
+    void characterAnimationEnd(String characterId, AWValue animation) {
+        if (animation.getStringValue().equals("animation/anim1")) {
+            playAnimation("animation/anim2");
+        } else {
+            playAnimation(null);
+        }
+    }
+    
+    private void start() {
+        playAnimation("animation/anim1");
+    }
 
-代码从 ``- (void)start`` 开始执行，先播放 ``animation/anim1``，在动画结束的回调中，判断当前结束的动画为 ``animation/anim1``，于是播放 ``animation/anim2``；在 ``animation/anim2`` 动画结束的回调中，判断结束的动画为 ``animation/anim2``，于是回到初始状态（把值置为 ``[AWValue null]`` 会回到初始状态）。
+代码从 ``void start()`` 开始执行，先播放 ``animation/anim1``，在动画结束的回调中，判断当前结束的动画为 ``animation/anim1``，于是播放 ``animation/anim2``；在 ``animation/anim2`` 动画结束的回调中，判断结束的动画为 ``animation/anim2``，于是回到初始状态（把值置为 ``null`` 会回到初始状态）。
 
 值得注意的两点：
 
-- 在 ``- (void)playAnimation:(NSString *)anim`` 方法中，我们设置了动画不循环，并且动画之间的切换时间为 300 毫秒。
+- 在 ``void playAnimation(String anim)`` 方法中，我们设置了动画不循环，并且动画之间的切换时间为 300 毫秒。
 - 指定动画资源的时候，需要把 ``.zip`` 后缀去掉。
 
 
@@ -665,58 +696,51 @@ SDK 提供了丰富的变形参数，具体可查询：
 
 在镜头不变的情况下，通过调整角色在世界坐标系下的位置，可以使角色渲染在 ``renderView`` 的不同位置上。例如，
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
-   AWValue* position = [AWValue valueOfVector3:AWVector3Make(20, 0, 0);
-   [character setConfigs:@{
-      AWCharacterConfigKeyPosition: position
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyPosition, AWValue.valueOfVector3(20, 0, 0));
+   config.commit();
    
 就表示将角色的世界坐标系位置设定为 ``(20, 0, 0)``。
 
 除了可以设定角色的位置，还可以设定角色的朝向。朝向既可以用欧拉角表示，也可以用四元数表示。假设我们需要角色绕着 `y` 轴旋转 30 度，就可以用如下方式实现：
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
-   AWValue* rotation = [AWValue valueOfVector3:AWVector3Make(0, 30, 0);
-   [character setConfigs:@{
-      AWCharacterConfigKeyRotation: rotation
-   }];
+   config.setKeyValue(AWCharacter.ConfigKeyRotation, AWValue.valueOfVector3(0, 30, 0));
+   config.commit();
 
 
 载入更多角色
 ^^^^^^^^^^^
 
-前面我们通过 ``[AWCharacter new]`` 创建出来的角色配置对象，始终指向同一个默认角色。如果需要创建多个角色，就需要通过如下方法实现
+前面我们通过 ``new AWCharacter.Config()`` 创建出来的角色配置对象，始终指向同一个默认角色。如果需要创建多个角色，就需要通过如下方法实现
 
-.. code-block:: objc
+.. code-block:: java
    :linenos:
    
    // 创建默认角色
-   AWCharacter* defaultCharacter = [AWCharacter new];
-   [defaultCharacter setConfigs:@{
-      AWCharacterConfigKeyFaceTarget: faceTarget1,
-      AWCharacterConfigKeyFaceTexture: faceTexture1,
-      AWCharacterConfigKeyGender: gender1
-   }];
+   AWCharacter.Config defaultCharacter = new AWCharacter.Config();
+   defaultCharacter.setKeyValue(AWCharacter.ConfigKeyFaceTarget, faceTarget1);
+   defaultCharacter.setKeyValue(AWCharacter.ConfigKeyFaceTexture, faceTexture1);
+   defaultCharacter.setKeyValue(AWCharacter.ConfigKeyGender, gender1);
+   defaultCharacter.commit();
    
    // 创建第二个角色，角色id可以任意指定
-   AWCharacter* secondCharacter = [[AWCharacter alloc] initWithCharacterId:@"lily"];
-   [secondCharacter setConfigs:@{
-      AWCharacterConfigKeyFaceTarget: faceTarget2,
-      AWCharacterConfigKeyFaceTexture: faceTexture2,
-      AWCharacterConfigKeyGender: gender2
-   }];
+   AWCharacter.Config secondCharacter = new AWCharacter.Config("lily");
+   secondCharacter.setKeyValue(AWCharacter.ConfigKeyFaceTarget, faceTarget2);
+   secondCharacter.setKeyValue(AWCharacter.ConfigKeyFaceTexture, faceTexture2);
+   secondCharacter.setKeyValue(AWCharacter.ConfigKeyGender, gender2);
+   secondCharacter.commit();
    
    // 创建第三个角色，角色id可以任意指定
-   AWCharacter* thirdCharacter = [[AWCharacter alloc] initWithCharacterId:@"lucy"];
-   [thirdCharacter setConfigs:@{
-      AWCharacterConfigKeyFaceTarget: faceTarget3,
-      AWCharacterConfigKeyFaceTexture: faceTexture3,
-      AWCharacterConfigKeyGender: gender3
-   }];
+   AWCharacter.Config thirdCharacter = new AWCharacter.Config("lucy");
+   thirdCharacter.setKeyValue(AWCharacter.ConfigKeyFaceTarget, faceTarget3);
+   thirdCharacter.setKeyValue(AWCharacter.ConfigKeyFaceTexture, faceTexture3);
+   thirdCharacter.setKeyValue(AWCharacter.ConfigKeyGender, gender3);
+   thirdCharacter.commit();
 
 
 AWCamera
@@ -727,17 +751,16 @@ AWCamera
 
 和角色类似，镜头（``AWCamera``）也可以调整位置和朝向，用法和角色类似，例如
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   AWValue* position = [AWValue valueOfVector3:AWVector3Make(20, 0, 0);
-   AWValue* rotation = [AWValue valueOfVector3:AWVector3Make(0, 30, 0);
-   [camera setConfigs:@{
-      AWCameraConfigKeyPosition: position,
-      AWCameraConfigKeyRotation: rotation
-   }];
+    AWCamera.Config config = new AWCamera.Config();
+    config.setKeyValue(AWCamera.ConfigKeyPosition, AWValue.valueOfVector3(20, 0, 0));
+    config.setKeyValue(AWCamera.ConfigKeyRotation, AWValue.valueOfVector3(0, 30, 0));
+    config.commit();
 
-为了更方便地处理旋转，镜头还支持始终盯着世界坐标系下的一个位置点，可通过 ``AWCameraConfigKeyLookAt`` 这个键来实现。 
+
+为了更方便地处理旋转，镜头还支持始终盯着世界坐标系下的一个位置点，可通过 ``AWCamera.ConfigKeyLookAt`` 这个键来实现。 
 
 
 
@@ -746,23 +769,22 @@ AWCamera
 
 和创建多角色类似，我们也可以创建多镜头。默认的镜头是主镜头，不可移除。可以通过如下方式新增一个特写镜头
 
-.. code-block:: objc
-   :linenos:
+.. code-block:: java
+    :linenos:
    
-   // 新增一个特写镜头
-   AWCamera* closeupCamera = [[AWCamera alloc] initWithCameraId:@"closeup"];
-   [closeupCamera setConfigs:@{
-      AWCameraConfigKeyIndex: [AWValue valueOfInt:1],
-      AWCameraConfigKeyViewport: [AWValue valueOfRect:AWRectMake(0, 0, 320, 180)],
-      AWCameraConfigKeyPosition: [AWValue valueOfVector3:AWVector3Make(0, 100, 180)],
-   }];
+    // 新增一个特写镜头
+    AWCamera.Config config = new AWCamera.Config("closeup");
+    config.setKeyValue(AWCamera.ConfigKeyIndex, AWValue.valueOfInt(1));
+    config.setKeyValue(AWCamera.ConfigKeyViewport, AWValue.valueOfRect(0, 0, 320, 180));
+    config.setKeyValue(AWCamera.ConfigKeyPosition, AWValue.valueOfVector3(0, 100, 180));
+    config.commit();
 
-在这个特写镜头里，我们需要指定特写镜头的 id 号。另外， ``AWCameraConfigKeyIndex`` 表示多个镜头在层叠过程中的排列顺序，值越大，镜头在屏幕中越靠外；``AWCameraConfigKeyViewport`` 表示镜头的视窗区域，即显示在 ``renderView`` 的指定区域中。
+在这个特写镜头里，我们需要指定特写镜头的 id 号。另外， ``AWCamera.ConfigKeyIndex`` 表示多个镜头在层叠过程中的排列顺序，值越大，镜头在屏幕中越靠外；``AWCamera.ConfigKeyViewport`` 表示镜头的视窗区域，即显示在 ``renderView`` 的指定区域中。
 
 镜头的背景图
 ^^^^^^^^^^
 
-可以通过 ``AWCameraConfigKeyBackImage`` 指定一张背景图显示在镜头所在的视窗中。默认采用“等比例充满”的方式在视窗中平铺背景图片。
+可以通过 ``AWCamera.ConfigKeyBackImage`` 指定一张背景图显示在镜头所在的视窗中。默认采用“等比例充满”的方式在视窗中平铺背景图片。
 
 AWPuppet
 ~~~~~~~~~~~~~~~~~
