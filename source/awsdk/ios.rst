@@ -896,9 +896,11 @@ AWResourceManager 作为 SDK 的资源管理器，可以设置缓存路径、添
 
 当不再需要使用引擎的时候，可通过如下方式重置引擎，回收内存
 
+
 .. code-block:: objc
    :linenos:
    [[AWSDK sharedSDK] resetEngine];
+
 
 一旦引擎被重置，所有角色、Puppet、镜头等的状态都会被重置，从而回到初始状态。这也意味着，原来通过 ``setConfigs`` 设置的角色、Puppet、镜头等的状态都会失效，原来渲染到 ``renderView`` 上的内容都会被清空。与此同时，``renderView`` 也会回到初始空指针的状态，而 ``[AWSDK sharedSDK].engineReady`` 的值则会变成 ``NO``，等等。可以认为整个引擎回到了尚未启动时的状态。开发者可通过重新执行前文讨论的流程来再次启动引擎。
    
