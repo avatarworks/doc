@@ -899,6 +899,7 @@ AWResourceManager 作为 SDK 的资源管理器，可以设置缓存路径、添
 
 .. code-block:: objc
    :linenos:
+   
    [[AWSDK sharedSDK] resetEngine];
 
 
